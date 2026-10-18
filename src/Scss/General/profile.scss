@@ -23,30 +23,7 @@
         @include form_mixin.form-row;
       }
 
-      .imageflex {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-        justify-content: space-between;
-        margin-bottom: 15px !important;
 
-        .formdiv {
-          flex: 1;
-          width: 50% !important;
-          gap: 10px;
-
-          input {
-            margin-bottom: 15px !important;
-          }
-        }
-
-        .imagediv {
-          align-items: center;
-          justify-content: center;
-          width: 50% !important;
-          margin-right: 4%;
-        }
-      }
 
       .form-group {
         label {
