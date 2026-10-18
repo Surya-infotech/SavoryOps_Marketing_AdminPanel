@@ -2,7 +2,6 @@ import ArrowDownward from '@mui/icons-material/ArrowDownward';
 import ArrowUpward from '@mui/icons-material/ArrowUpward';
 import UnfoldMore from '@mui/icons-material/UnfoldMore';
 import ViewIcon from '@mui/icons-material/Visibility';
-import DeleteIcon from '@mui/icons-material/Delete';
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 import { IconButton } from '@mui/material';
 import { useEffect, useState, useMemo } from 'react';
@@ -52,7 +51,6 @@ const GetWhiteLabel = ({ searchValue }) => {
     const [sortDirection, setSortDirection] = useState('desc');
     const [inquiryList, setInquiryList] = useState([]);
     const [viewModalInquiry, setViewModalInquiry] = useState(null);
-    const [deleteTargetId, setDeleteTargetId] = useState(null);
 
     const fetchInquiries = async () => {
         if (!CheckToken(token, logoutUser, navigate)) return;
@@ -117,30 +115,6 @@ const GetWhiteLabel = ({ searchValue }) => {
         }
     };
 
-    const confirmDelete = async () => {
-        if (!deleteTargetId) return;
-        try {
-            const response = await fetch(`${adminPanelBackendPath}/Support/DeleteWhiteLabel/${deleteTargetId}`, {
-                method: 'DELETE',
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    'Content-Type': 'application/json',
-                },
-            });
-            if (response.ok) {
-                setInquiryList((prev) => prev.filter((item) => item._id !== deleteTargetId));
-                setSuccessMessage(translations.inquirydeletedsuccessfully || "Inquiry deleted successfully.");
-            } else {
-                setWarningMessage("Failed to delete inquiry");
-                setShowWarning(true);
-            }
-        } catch {
-            setWarningMessage("Error deleting inquiry");
-            setShowWarning(true);
-        } finally {
-            setDeleteTargetId(null);
-        }
-    };
 
     const renderSortIcon = (column) => {
         if (sortColumn !== column) return <UnfoldMore fontSize="small" />;
@@ -217,13 +191,6 @@ const GetWhiteLabel = ({ searchValue }) => {
         <>
             {showWarning && (
                 <WarningModal message={warningMessage} onClose={() => setShowWarning(false)} />
-            )}
-            {deleteTargetId && (
-                <WarningModal
-                    message={translations.deleteinquirywarning || "Are you sure you want to delete this white-label inquiry?"}
-                    onConfirm={confirmDelete}
-                    onClose={() => setDeleteTargetId(null)}
-                />
             )}
             {successMessage && (
                 <AlertMessage message={successMessage} onClose={() => setSuccessMessage('')} />
@@ -317,14 +284,6 @@ const GetWhiteLabel = ({ searchValue }) => {
                                                     </IconButton>
                                                 )}
 
-                                                <IconButton
-                                                    onClick={() => setDeleteTargetId(inquiry._id)}
-                                                    size="small"
-                                                    title={translations.Delete || "Delete"}
-                                                    className="delete-icon"
-                                                >
-                                                    <DeleteIcon fontSize="small" />
-                                                </IconButton>
                                             </div>
                                         </td>
                                     </tr>
