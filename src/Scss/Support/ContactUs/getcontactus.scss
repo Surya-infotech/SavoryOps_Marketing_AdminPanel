@@ -2,13 +2,18 @@
 
 .tablediv {
     @include table_mixin.main_table;
+    overflow-x: auto;
 
     .contactustable {
         @include table_mixin.table;
+        min-width: 900px;
+        width: 100%;
 
         thead {
             th {
                 @include table_mixin.table_thead;
+                white-space: nowrap;
+                padding: 12px 14px;
             }
 
             td {
@@ -23,11 +28,47 @@
 
             td {
                 @include table_mixin.table_td;
+                padding: 12px 14px;
+                vertical-align: middle;
+            }
+
+            .contactus-name-cell {
+                white-space: nowrap;
+                font-weight: 600;
+            }
+
+            .contactus-email-cell {
+                white-space: nowrap;
+            }
+
+            .contactus-phone-cell {
+                white-space: nowrap;
+            }
+
+            .contactus-subject-cell {
+                white-space: nowrap;
+            }
+
+            .contactus-date-cell {
+                white-space: nowrap;
+                font-size: 0.85rem;
+                color: #555;
             }
 
             .contactus-message-cell {
-                max-width: 300px;
-                word-break: break-word;
+                max-width: 220px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                cursor: help;
+            }
+
+            .contactus-actions {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 4px;
+                white-space: nowrap;
             }
 
             .view-icon {
@@ -35,7 +76,37 @@
 
                 &:hover {
                     color: #1b5e20;
+                    background-color: rgba(46, 125, 50, 0.08);
                 }
+            }
+
+            .wa-icon-btn {
+                color: #25d366;
+
+                &:hover {
+                    color: #128c7e;
+                    background-color: rgba(37, 211, 102, 0.08);
+                }
+            }
+
+            .delete-icon-btn {
+                color: #d32f2f;
+
+                &:hover {
+                    color: #b71c1c;
+                    background-color: rgba(211, 47, 47, 0.08);
+                }
+            }
+
+            .contact-subject-badge {
+                display: inline-block;
+                padding: 3px 10px;
+                border-radius: 9999px;
+                font-size: 0.78rem;
+                font-weight: 600;
+                background-color: rgba(46, 125, 50, 0.1);
+                color: #2e7d32;
+                border: 1px solid rgba(46, 125, 50, 0.25);
             }
 
             a {
@@ -50,6 +121,7 @@
 
         .contactus-view-th {
             cursor: default;
+            text-align: center;
         }
     }
 }
@@ -82,12 +154,12 @@
         align-items: center;
         justify-content: center;
         min-height: 100%;
-        padding: 1rem;
+        padding: 1.5rem;
         box-sizing: border-box;
     }
 
     .modal-dialog {
-        max-width: 500px;
+        max-width: 580px;
         width: 100%;
         margin: 0 auto;
     }
@@ -95,24 +167,31 @@
     .modal-content {
         background-color: var(--page-color, #fff);
         color: var(--text-color, #333);
-        border-radius: 8px;
-        box-shadow: 0 4px 24px rgba(0, 0, 0, 0.25);
+        border-radius: 12px;
+        box-shadow: 0 12px 36px rgba(0, 0, 0, 0.3);
+        border: none;
+        overflow: hidden;
     }
 
     .modal-header {
-        padding: 1rem 1.25rem;
-        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        padding: 1.1rem 1.4rem;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+        background: rgba(0, 0, 0, 0.02);
     }
 
     .modal-footer {
-        padding: 1rem 1.25rem;
-        border-top: 1px solid rgba(0, 0, 0, 0.1);
+        padding: 1rem 1.4rem;
+        border-top: 1px solid rgba(0, 0, 0, 0.08);
+        background: rgba(0, 0, 0, 0.02);
     }
 
     .contactus-view-modal-body {
         display: flex;
         flex-direction: column;
         gap: 14px;
+        padding: 1.4rem;
+        max-height: 75vh;
+        overflow-y: auto;
     }
 
     .contactus-view-row {
@@ -122,11 +201,15 @@
 
         .contactus-view-label {
             font-weight: 600;
-            color: var(--text-color, #333);
+            color: #666;
+            font-size: 0.82rem;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
         }
 
         .contactus-view-value {
-            color: var(--text-color, #333);
+            color: var(--text-color, #222);
+            font-size: 0.95rem;
 
             a {
                 color: #2e7d32;
@@ -141,8 +224,15 @@
         &.contactus-view-row-message .contactus-view-message {
             white-space: pre-wrap;
             word-break: break-word;
-            max-height: 200px;
+            max-height: 220px;
             overflow-y: auto;
+            line-height: 1.6;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 14px 16px;
+            color: #1e293b;
+            font-size: 0.92rem;
         }
     }
 }
