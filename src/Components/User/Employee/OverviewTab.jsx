@@ -1,7 +1,6 @@
 import moment from 'moment-timezone';
 import EmailIcon from '@mui/icons-material/Email';
 import PhoneIcon from '@mui/icons-material/Phone';
-import profilePlaceholder from '../../../assets/profile-placeholder.png';
 import { useLanguage } from '../../../Context/LanguageContext';
 
 const OverviewTab = ({ employeeData }) => {
@@ -35,19 +34,20 @@ const OverviewTab = ({ employeeData }) => {
     const fullName = `${employeeData.firstname || ''} ${employeeData.lastname || ''}`.trim() || '-';
     const role = employeeData.role || employeeData.employeetype || 'Employee';
 
+    const getInitials = (name) => {
+        if (!name || name === '-') return 'U';
+        const parts = name.trim().split(/\s+/);
+        if (parts.length === 1) return parts[0].charAt(0).toUpperCase();
+        return (parts[0].charAt(0) + parts[parts.length - 1].charAt(0)).toUpperCase();
+    };
+
     return (
         <div className="employeeoverview-card">
             <div className="employee-header-section">
                 <div className="employee-image-container">
-                    <img
-                        src={employeeData.profileimage || profilePlaceholder}
-                        alt={fullName}
-                        className="employee-overview-image"
-                        onError={(e) => {
-                            e.target.onerror = null;
-                            e.target.src = profilePlaceholder;
-                        }}
-                    />
+                    <div className="employee-overview-avatar" aria-label={fullName}>
+                        {getInitials(fullName)}
+                    </div>
                 </div>
                 <div className="employee-title-section">
                     <h4 className="employee-name-title">{fullName}</h4>
@@ -82,30 +82,6 @@ const OverviewTab = ({ employeeData }) => {
                         <span className="detail-label">{translations.gender}</span>
                         <span className="detail-value">{employeeData.gender || '-'}</span>
                     </div>
-                    {employeeData.address && (
-                        <div className="detail-item">
-                            <span className="detail-label">{translations.address}</span>
-                            <span className="detail-value">{employeeData.address}</span>
-                        </div>
-                    )}
-                    {employeeData.cityname && (
-                        <div className="detail-item">
-                            <span className="detail-label">{translations.city}</span>
-                            <span className="detail-value">{employeeData.cityname}</span>
-                        </div>
-                    )}
-                    {employeeData.statename && (
-                        <div className="detail-item">
-                            <span className="detail-label">{translations.state}</span>
-                            <span className="detail-value">{employeeData.statename}</span>
-                        </div>
-                    )}
-                    {employeeData.countryname && (
-                        <div className="detail-item">
-                            <span className="detail-label">{translations.country}</span>
-                            <span className="detail-value">{employeeData.countryname}</span>
-                        </div>
-                    )}
                     <div className="detail-item">
                         <span className="detail-label">{translations.createdat}</span>
                         <span className="detail-value">{formatDateTime(employeeData.createdAt)}</span>

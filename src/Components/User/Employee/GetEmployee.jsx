@@ -15,7 +15,6 @@ import "../../../Scss/User/Employee/getemployee.scss";
 import { useLanguage } from "../../../Context/LanguageContext";
 import CheckToken from '../../../utils/CheckToken';
 import HandleUnauthorized from '../../../utils/HandleUnauthorized';
-import profilePlaceholder from '../../../assets/profile-placeholder.png';
 
 const GetEmployee = ({ searchValue = "" }) => {
     const { logoutUser } = useAuth();
@@ -37,6 +36,14 @@ const GetEmployee = ({ searchValue = "" }) => {
     const [employees, setEmployees] = useState([]);
     const [selectedEmployee, setSelectedEmployee] = useState(null);
     const [isDeleting, setIsDeleting] = useState(false);
+
+    const getInitials = (name) => {
+        if (!name) return 'U';
+        const parts = name.trim().split(/\s+/).filter(Boolean);
+        if (parts.length === 0) return 'U';
+        if (parts.length === 1) return parts[0].charAt(0).toUpperCase();
+        return (parts[0].charAt(0) + parts[parts.length - 1].charAt(0)).toUpperCase();
+    };
 
     useEffect(() => {
         let isMounted = true;
@@ -252,15 +259,9 @@ const GetEmployee = ({ searchValue = "" }) => {
                                                     className="employee-name-container"
                                                     onClick={() => handleEmployeeNameClick(employee._id || employee.employeeid)}
                                                 >
-                                                    <img
-                                                        src={employee.profileimage || profilePlaceholder}
-                                                        alt={`${employee.firstname || ''} ${employee.lastname || ''}`.trim()}
-                                                        className="employee-avatar"
-                                                        onError={(e) => {
-                                                            e.target.onerror = null;
-                                                            e.target.src = profilePlaceholder;
-                                                        }}
-                                                    />
+                                                    <div className="employee-avatar" aria-label={`${employee.firstname || ''} ${employee.lastname || ''}`.trim()}>
+                                                        {getInitials(`${employee.firstname || ''} ${employee.lastname || ''}`)}
+                                                    </div>
                                                     <Tooltip
                                                         title={translations.viewdetails}
                                                         arrow

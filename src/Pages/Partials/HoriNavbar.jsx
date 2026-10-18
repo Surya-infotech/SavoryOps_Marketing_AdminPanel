@@ -29,7 +29,6 @@ const Flag = (props) => {
 import { useLanguage } from "../../Context/LanguageContext";
 import { getLanguageOptions } from "../../constants/languages";
 import "../../Scss/Partials/horinavbar.scss";
-import profilePlaceholder from '../../assets/profile-placeholder.png';
 import Dropdown from '../../Components/Dropdown/Dropdown';
 import { useFiscalYear } from '../../Context/FiscalYearContext';
 import { usePermissions } from '../../Hooks/usePermissions';
@@ -52,11 +51,6 @@ const HoriNavbar = () => {
     const [isQuickMenuVisible, setQuickMenuVisible] = useState(false);
     const [selectedLanguage, setSelectedLanguage] = useState('English');
     const { translations, isRtl } = useLanguage();
-    const adminPanelBackendPath = import.meta.env.VITE_BACKEND_URL;
-    const tokenname = import.meta.env.VITE_AdminTOKEN_NAME;
-    const token = localStorage.getItem(tokenname);
-    const EmployeeId = localStorage.getItem("EmployeeID");
-    const [adminProfileImage, setAdminProfileImage] = useState(profilePlaceholder);
 
     const getFullscreenElement = () =>
         document.fullscreenElement ?? document.webkitFullscreenElement ?? null;
@@ -160,33 +154,6 @@ const HoriNavbar = () => {
         }
     };
 
-    useEffect(() => {
-        const fetchAdminProfileImage = async () => {
-            if (!token) return;
-            if (!CheckToken(token, logoutUser, navigate)) return;
-            try {
-                let endpoint = `${adminPanelBackendPath}/admin/GetAdminDetails/${EmployeeId}`;
-                let response = await fetch(endpoint, {
-                    method: "GET",
-                    headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
-                });
-
-                const data = await response.json();
-                if (HandleUnauthorized(data, logoutUser, navigate)) return;
-
-                if (response.ok && data.admin && data.admin.profileimage) {
-                    setAdminProfileImage(data.admin.profileimage);
-                }
-            } catch (error) {
-                console.log("Error fetching admin profile image:", error);
-            }
-        };
-
-        fetchAdminProfileImage();
-
-        window.addEventListener("adminProfileUpdated", fetchAdminProfileImage);
-        return () => window.removeEventListener("adminProfileUpdated", fetchAdminProfileImage);
-    }, [adminPanelBackendPath, token, logoutUser, navigate, EmployeeId]);
 
     return (<>
         <nav className={`hori-navbar ${isRtl ? 'rtl-horinav' : ''}`} dir={isRtl ? 'rtl' : 'ltr'}>
@@ -254,16 +221,10 @@ const HoriNavbar = () => {
                         )}
                     </div>
                 )}
-                <div className="profile-section" onClick={toggleDropdown}>
-                    <img
-                        src={adminProfileImage}
-                        alt={translations.Profile}
-                        className="profile-photo"
-                        onError={(e) => {
-                            e.target.onerror = null;
-                            e.target.src = profilePlaceholder;
-                        }}
-                    />
+                <div className="profile-section" onClick={toggleDropdown} title={translations.Profile || "Profile"}>
+                    <div className="profile-photo">
+                        <PersonIcon />
+                    </div>
                 </div>
             </div>
             {isQuickMenuVisible && (

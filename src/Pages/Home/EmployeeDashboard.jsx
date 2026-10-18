@@ -8,7 +8,6 @@ import {
     VerifiedUser,
     Phone,
     Email,
-    LocationOn,
     Edit as EditIcon
 } from '@mui/icons-material';
 import { useLanguage } from '../../Context/LanguageContext';
@@ -17,7 +16,6 @@ import LoadingSpinner from '../Custom/LoadingSpinner';
 import WarningModal from '../Custom/WarningModal';
 import CheckToken from '../../utils/CheckToken';
 import HandleUnauthorized from '../../utils/HandleUnauthorized';
-import profilePlaceholder from '../../assets/profile-placeholder.png';
 import "../../Scss/Home/Dashboard/employeedashboard.scss";
 
 const EmployeeDashboard = () => {
@@ -75,6 +73,13 @@ const EmployeeDashboard = () => {
     const employeeFullName = employeeData
         ? `${employeeData.firstname || ''} ${employeeData.lastname || ''}`.trim()
         : '';
+
+    const getInitials = (name) => {
+        if (!name || name === '-') return 'U';
+        const parts = name.trim().split(/\s+/);
+        if (parts.length === 1) return parts[0].charAt(0).toUpperCase();
+        return (parts[0].charAt(0) + parts[parts.length - 1].charAt(0)).toUpperCase();
+    };
 
     useEffect(() => {
         if (translations.Dashboard) document.title = translations.Dashboard;
@@ -147,15 +152,9 @@ const EmployeeDashboard = () => {
                     <div className="employee-hero-card">
                         <div className="hero-left-wrapper">
                             <div className="avatar-container">
-                                <img
-                                    src={employeeData?.profileimage || profilePlaceholder}
-                                    alt={employeeFullName || "Employee"}
-                                    className="employee-avatar-img"
-                                    onError={(e) => {
-                                        e.target.onerror = null;
-                                        e.target.src = profilePlaceholder;
-                                    }}
-                                />
+                                <div className="employee-avatar-badge" aria-label={employeeFullName || "Employee"}>
+                                    {getInitials(employeeFullName)}
+                                </div>
                                 {isActive && <span className="online-status-dot" title="Active Account" />}
                             </div>
 
@@ -247,37 +246,28 @@ const EmployeeDashboard = () => {
 
                     {/* 3. Detailed Information Cards Row */}
                     <div className="info-panels-row">
-                        {/* Location & Address */}
                         <div className="info-panel-card">
                             <div className="panel-header">
-                                <LocationOn className="panel-header-icon" />
-                                <h5 className="panel-title">{translations.locationdetails}</h5>
+                                <PersonOutlined className="panel-header-icon" />
+                                <h5 className="panel-title">{translations.employeeoverview || 'Employee Overview'}</h5>
                             </div>
                             <div className="panel-body">
                                 <div className="info-list">
                                     <div className="info-row">
-                                        <span className="info-key">{translations.address}</span>
-                                        <span className={`info-val ${!employeeData?.address ? 'empty-val' : ''}`}>
-                                             {employeeData?.address || (translations.notprovided)}
-                                        </span>
+                                        <span className="info-key">{translations.employeeid}</span>
+                                        <span className="info-val">{employeeData?.employeeid || employeeData?._id || '-'}</span>
                                     </div>
                                     <div className="info-row">
-                                        <span className="info-key">{translations.city}</span>
-                                        <span className={`info-val ${!employeeData?.cityname ? 'empty-val' : ''}`}>
-                                            {employeeData?.cityname || (translations.notprovided)}
-                                        </span>
+                                        <span className="info-key">{translations.role}</span>
+                                        <span className="info-val">{role}</span>
                                     </div>
                                     <div className="info-row">
-                                        <span className="info-key">{translations.state}</span>
-                                        <span className={`info-val ${!employeeData?.statename ? 'empty-val' : ''}`}>
-                                            {employeeData?.statename || (translations.notprovided)}
-                                        </span>
+                                        <span className="info-key">{translations.gender}</span>
+                                        <span className="info-val">{employeeData?.gender || '-'}</span>
                                     </div>
                                     <div className="info-row">
-                                        <span className="info-key">{translations.country}</span>
-                                        <span className={`info-val ${!employeeData?.countryname ? 'empty-val' : ''}`}>
-                                            {employeeData?.countryname || (translations.notprovided)}
-                                        </span>
+                                        <span className="info-key">{translations.createdat}</span>
+                                        <span className="info-val">{formatDate(employeeData?.createdAt)}</span>
                                     </div>
                                 </div>
                             </div>

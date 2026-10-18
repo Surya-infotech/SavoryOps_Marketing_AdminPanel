@@ -54,6 +54,38 @@ const formatDisplayDate = (dateStr) => {
     }
 };
 
+const InquiryTooltip = ({ active, payload, label }) => {
+    if (active && payload && payload.length) {
+        return (
+            <div className="custom-tooltip">
+                <p className="label">{`${label}`}</p>
+                {payload.map((entry, index) => (
+                    <p key={index} className="tooltip-data" style={{ color: entry.stroke || entry.color || "#10b981" }}>
+                        {`${entry.name}: ${entry.value}`}
+                    </p>
+                ))}
+            </div>
+        );
+    }
+    return null;
+};
+
+const SubscriberTooltip = ({ active, payload, label }) => {
+    if (active && payload && payload.length) {
+        return (
+            <div className="custom-tooltip">
+                <p className="label">{`${label}`}</p>
+                {payload.map((entry, index) => (
+                    <p key={index} className="tooltip-data" style={{ color: entry.fill || entry.color || "var(--primary-color)" }}>
+                        {`${entry.name}: ${entry.value}`}
+                    </p>
+                ))}
+            </div>
+        );
+    }
+    return null;
+};
+
 const Dashboard = () => {
     const navigate = useNavigate();
     const location = useLocation();
@@ -234,38 +266,6 @@ const Dashboard = () => {
     });
 
     const chartData = [...initialChartData];
-
-    const InquiryTooltip = ({ active, payload, label }) => {
-        if (active && payload && payload.length) {
-            return (
-                <div className="custom-tooltip">
-                    <p className="label">{`${label}`}</p>
-                    {payload.map((entry, index) => (
-                        <p key={index} className="tooltip-data" style={{ color: entry.stroke || entry.color || "#10b981" }}>
-                            {`${entry.name}: ${entry.value}`}
-                        </p>
-                    ))}
-                </div>
-            );
-        }
-        return null;
-    };
-
-    const SubscriberTooltip = ({ active, payload, label }) => {
-        if (active && payload && payload.length) {
-            return (
-                <div className="custom-tooltip">
-                    <p className="label">{`${label}`}</p>
-                    {payload.map((entry, index) => (
-                        <p key={index} className="tooltip-data" style={{ color: entry.fill || entry.color || "var(--primary-color)" }}>
-                            {`${entry.name}: ${entry.value}`}
-                        </p>
-                    ))}
-                </div>
-            );
-        }
-        return null;
-    };
 
     const handleWarningClose = () => {
         setShowWarning(false);
@@ -456,13 +456,13 @@ const Dashboard = () => {
                     ) : (
                         <div className="no-data-message">
                             <Typography variant="body2">
-                                {translations.NoRecentEmployees || translations.notfoundrecentcustomers || "No employees found"}
+                                {translations.NoRecentEmployees || "No employees found"}
                             </Typography>
                         </div>
                     )}
                 </div>
 
-                <div className="chart-container monthly-order-chart">
+                <div className="chart-container">
                     <Typography variant="h6" className="chart-title">
                         {translations.MonthlySubscribers || "Monthly Subscribers"}
                     </Typography>

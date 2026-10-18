@@ -96,7 +96,7 @@ const GetWhiteLabel = ({ searchValue }) => {
                 setWarningMessage(data.message || "Failed to update status");
                 setShowWarning(true);
             }
-        } catch (error) {
+        } catch {
             setWarningMessage("Error updating status");
             setShowWarning(true);
         }
