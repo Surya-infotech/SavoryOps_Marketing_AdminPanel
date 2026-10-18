@@ -80,40 +80,37 @@ const Setting = () => {
         }
     }, [location, navigate, tabs]);
 
-    return (
-        <div className={`setting-container-fluid ${isRtl ? 'rtl-setting' : ''}`} dir={isRtl ? 'rtl' : 'ltr'}>
+    return (<>
+        <div className={`Setting-container ${isRtl ? 'rtl-setting' : ''}`} dir={isRtl ? 'rtl' : 'ltr'}>
             <div className="setting-container">
                 <h6 className="setting-headingname">{translations.Setting}</h6>
-                {alertMessage && <AlertMessage message={alertMessage} onClose={() => setAlertMessage("")} />}
-                {warningMessage && <WarningModal message={warningMessage} onClose={() => setWarningMessage("")} />}
+                <div className="setting-form-container">
+                    {alertMessage && <AlertMessage message={alertMessage} onClose={() => setAlertMessage("")} />}
+                    {warningMessage && <WarningModal message={warningMessage} onClose={() => setWarningMessage("")} />}
 
-                <div className="setting-card">
-                    <aside className="setting-sidebar">
-                        <ul className="setting-nav">
+                    <div className="tabs-container">
+                        {/* Vertical Tabs */}
+                        <div className="vertical-tabs">
                             {tabs.map((tab) => (
-                                <li key={tab.id} className="setting-nav-item">
-                                    <button
-                                        type="button"
-                                        className={`setting-nav-link ${activeTab.id === tab.id ? 'active' : ''}`}
-                                        onClick={() => setActiveTabId(tab.id)}
-                                    >
-                                        <span className="setting-tab-icon">{tab.icon}</span>
-                                        <span className="setting-tab-title">{tab.title}</span>
-                                    </button>
-                                </li>
+                                <div
+                                    key={tab.id}
+                                    className={`tab-item ${activeTab.id === tab.id ? 'active' : ''}`}
+                                    onClick={() => setActiveTabId(tab.id)}
+                                >
+                                    <span className="tab-icon">{tab.icon}</span>
+                                    <span className="tab-title">{tab.title}</span>
+                                </div>
                             ))}
-                        </ul>
-                    </aside>
-
-                    <section className="setting-content">
-                        <div className="setting-pane-body">
-                            {activeTab.content}
                         </div>
-                    </section>
+                        {/* Tab Content */}
+                        <div className="tab-content">
+                            <div className="tab-content-body">{activeTab.content}</div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    );
+    </>);
 };
 
 export default Setting;
