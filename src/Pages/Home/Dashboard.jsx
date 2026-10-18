@@ -1,8 +1,7 @@
 import ArrowForward from "@mui/icons-material/ArrowForward";
+import ContactMail from "@mui/icons-material/ContactMail";
 import Groups from "@mui/icons-material/Groups";
 import MarkEmailRead from "@mui/icons-material/MarkEmailRead";
-import Payments from "@mui/icons-material/Payments";
-import ShoppingBag from "@mui/icons-material/ShoppingBag";
 import TrendingDown from "@mui/icons-material/TrendingDown";
 import TrendingUp from "@mui/icons-material/TrendingUp";
 import WorkspacePremium from "@mui/icons-material/WorkspacePremium";
@@ -21,22 +20,20 @@ import WarningModal from "../Custom/WarningModal";
 import { useFiscalYear } from "../../Context/FiscalYearContext";
 
 const initialDashboardState = {
-    totalOrdersCount: 0,
-    allOrdersCount: 0,
-    totalRevenue: 0,
-    totalSubtotalSum: 0,
-    totalTaxSum: 0,
-    totalProductsCount: 0,
-    publishedProductsCount: 0,
-    totalCustomersCount: 0,
+    whiteLabelCount: 0,
+    contactUsCount: 0,
+    totalSubscriptionCount: 0,
+    totalEmployeesCount: 0,
+    activeEmployeesCount: 0,
     monthlySummary: [],
     kpiDifferences: {},
-    recentOrders: [],
-    recentCustomers: []
+    recentWhiteLabels: [],
+    recentEmployees: [],
+    whiteLabelStatusCounts: {}
 };
 
 const getInitials = (name) => {
-    if (!name) return "C";
+    if (!name) return "S";
     const parts = name.trim().split(/\s+/);
     if (parts.length === 1) return parts[0].charAt(0).toUpperCase();
     return (parts[0].charAt(0) + parts[parts.length - 1].charAt(0)).toUpperCase();
@@ -71,7 +68,6 @@ const Dashboard = () => {
     const [showWarning, setShowWarning] = useState(false);
     const [alertMessage, setAlertMessage] = useState("");
     const [dashboardData, setDashboardData] = useState(initialDashboardState);
-    const [currencyDetails, setCurrencyDetails] = useState({ currencysymbol: '₹', currencyposition: 'right' });
 
     useEffect(() => {
         if (isEmployee) {
@@ -104,68 +100,9 @@ const Dashboard = () => {
         }
     }, [location, navigate]);
 
-    const formatCurrency = (amount, details) => {
-        if (amount === undefined || amount === null) return "₹0.00";
-        const num = parseFloat(amount || 0);
-        if (isNaN(num)) return amount;
-
-        const {
-            decimal = 2,
-            thousandseparator = ',',
-            decimalseparator = '.',
-            currencysymbol = '₹',
-            currencyposition = 'right'
-        } = details || {};
-
-        const decPlaces = decimal !== undefined && decimal !== null ? parseInt(decimal, 10) : 2;
-        let [intPart, decPart] = num.toFixed(decPlaces).split('.');
-        const sep = thousandseparator || ',';
-
-        // Proper Indian number system grouping: last 3 digits, then groups of 2 digits
-        const last3 = intPart.slice(-3);
-        const other = intPart.slice(0, -3);
-        const formattedInt = other !== '' ? other.replace(/\B(?=(\d{2})+(?!\d))/g, sep) + sep + last3 : last3;
-
-        const decSep = decimalseparator || '.';
-        const formattedAmount = decPlaces > 0 ? `${formattedInt}${decSep}${decPart}` : formattedInt;
-
-        switch (currencyposition) {
-            case "left": return `${currencysymbol || '₹'}${formattedAmount}`;
-            case "left-space": return `${currencysymbol || '₹'} ${formattedAmount}`;
-            case "right": return `${formattedAmount}${currencysymbol || '₹'}`;
-            case "right-space": return `${formattedAmount} ${currencysymbol || '₹'}`;
-            default: return `${formattedAmount}${currencysymbol || '₹'}`;
-        }
-    };
-
     useEffect(() => {
         if (isEmployee) return;
         if (!CheckToken(token, logoutUser, navigate)) return;
-
-        const fetchActiveCurrency = async () => {
-            try {
-                const miscRes = await fetch(`${adminPanelBackendPath}/System/GetMiscSetting`, {
-                    method: "GET",
-                    headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
-                });
-                const miscData = await miscRes.json();
-                if (miscRes.ok && miscData?.currencyid) {
-                    const currRes = await fetch(`${adminPanelBackendPath}/System/GetCurrencies_statustrue`, {
-                        method: "GET",
-                        headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
-                    });
-                    const currData = await currRes.json();
-                    if (currRes.ok && Array.isArray(currData)) {
-                        const matched = currData.find(c => Number(c.currencyid) === Number(miscData.currencyid));
-                        if (matched) {
-                            setCurrencyDetails(matched);
-                        }
-                    }
-                }
-            } catch {
-                // Ignore fallback to defaults
-            }
-        };
 
         const fetchDashboardData = async () => {
             try {
@@ -181,22 +118,15 @@ const Dashboard = () => {
                         ...prevData,
                         ...data
                     }));
-                    if (data.currencyDetails || data.currency) {
-                        setCurrencyDetails(data.currencyDetails || data.currency);
-                    } else {
-                        fetchActiveCurrency();
-                    }
                 } else {
                     const errorMessages = {
                         "Server error": translations.servererror
                     };
                     setWarningMessage(errorMessages[data.message] || data.message || translations.servererror);
                     setShowWarning(true);
-                    fetchActiveCurrency();
                 }
             } catch (err) {
                 console.error("Dashboard fetch notice:", err);
-                fetchActiveCurrency();
             }
         };
 
@@ -235,24 +165,25 @@ const Dashboard = () => {
         {
             name: translations.WhiteLabelInquiries || "White-Label Inquiries",
             count: dashboardData.whiteLabelCount ?? 0,
-            difference: "+100%",
+            difference: kpiDifferences.whiteLabelDifference || "+100%",
             icon: <WorkspacePremium className="card-icon" />,
             onClick: () => navigate('/Support/WhiteLabel'),
             isClickable: true,
             variant: "highlight",
         },
         {
-            name: translations.totalrevenue,
-            count: formatCurrency(dashboardData.totalRevenue ?? 0, currencyDetails),
-            difference: kpiDifferences.revenueDifference,
-            icon: <Payments className="card-icon" />,
-            isClickable: false,
+            name: translations.ContactUs || "Contact Us",
+            count: dashboardData.contactUsCount ?? 0,
+            difference: kpiDifferences.contactUsDifference || "+100%",
+            icon: <ContactMail className="card-icon" />,
+            onClick: () => navigate('/Support/ContactUs'),
+            isClickable: true,
             variant: "revenue",
         },
         {
             name: translations.Subscribers || "Subscribers",
-            count: dashboardData.totalSubscriptionCount || 43,
-            difference: "+12%",
+            count: dashboardData.totalSubscriptionCount ?? 0,
+            difference: kpiDifferences.subscribersDifference || "+12%",
             icon: <MarkEmailRead className="card-icon" />,
             onClick: () => navigate('/Support/Subscribers'),
             isClickable: true,
@@ -260,8 +191,8 @@ const Dashboard = () => {
         },
         {
             name: translations.Employee || "Employees",
-            count: dashboardData.totalCustomersCount ?? 0,
-            difference: kpiDifferences.customersDifference,
+            count: dashboardData.totalEmployeesCount ?? 0,
+            difference: kpiDifferences.employeesDifference || "0%",
             icon: <Groups className="card-icon" />,
             onClick: () => navigate('/User/Employee'),
             isClickable: true,
@@ -270,40 +201,64 @@ const Dashboard = () => {
     ];
 
     const monthNames = [
-        translations.Jan,
-        translations.Feb,
-        translations.Mar,
-        translations.Apr,
-        translations.May,
-        translations.Jun,
-        translations.Jul,
-        translations.Aug,
-        translations.Sep,
-        translations.Oct,
-        translations.Nov,
-        translations.Dec
+        translations.Jan || "Jan",
+        translations.Feb || "Feb",
+        translations.Mar || "Mar",
+        translations.Apr || "Apr",
+        translations.May || "May",
+        translations.Jun || "Jun",
+        translations.Jul || "Jul",
+        translations.Aug || "Aug",
+        translations.Sep || "Sep",
+        translations.Oct || "Oct",
+        translations.Nov || "Nov",
+        translations.Dec || "Dec"
     ];
 
-    const initialChartData = monthNames.map((month) => ({ month, Revenue: 0, Orders: 0 }));
+    const initialChartData = monthNames.map((month) => ({
+        month,
+        whiteLabelCount: 0,
+        contactUsCount: 0,
+        totalInquiries: 0,
+        subscriberCount: 0
+    }));
 
     (dashboardData.monthlySummary || []).forEach((item) => {
         const monthIndex = (item._id ?? 0) - 1;
         if (monthIndex >= 0 && monthIndex < 12) {
-            initialChartData[monthIndex].Revenue = item.monthlyRevenue ?? 0;
-            initialChartData[monthIndex].Orders = item.orderCount ?? (item.subscriptionCount ?? 0);
+            initialChartData[monthIndex].whiteLabelCount = item.whiteLabelCount ?? 0;
+            initialChartData[monthIndex].contactUsCount = item.contactUsCount ?? 0;
+            initialChartData[monthIndex].totalInquiries = item.totalInquiries ?? ((item.whiteLabelCount ?? 0) + (item.contactUsCount ?? 0));
+            initialChartData[monthIndex].subscriberCount = item.subscriberCount ?? 0;
         }
     });
 
     const chartData = [...initialChartData];
 
-    const CustomTooltip = ({ active, payload, label, translations, currencyDetails, formatCurrency }) => {
+    const InquiryTooltip = ({ active, payload, label }) => {
         if (active && payload && payload.length) {
             return (
                 <div className="custom-tooltip">
                     <p className="label">{`${label}`}</p>
                     {payload.map((entry, index) => (
-                        <p key={index} className="tooltip-data">
-                            {`${entry.dataKey === "Revenue" ? translations.monthlyrevenue : translations.orders}: ${entry.dataKey === "Revenue" ? formatCurrency(entry.value, currencyDetails) : entry.value}`}
+                        <p key={index} className="tooltip-data" style={{ color: entry.stroke || entry.color || "#10b981" }}>
+                            {`${entry.name}: ${entry.value}`}
+                        </p>
+                    ))}
+                </div>
+            );
+        }
+        return null;
+    };
+
+    const SubscriberTooltip = ({ active, payload, label }) => {
+        if (active && payload && payload.length) {
+            return (
+                <div className="custom-tooltip">
+                    <p className="label">{`${label}`}</p>
+                    {payload.map((entry, index) => (
+                        <p key={index} className="tooltip-data" style={{ color: entry.fill || entry.color || "var(--primary-color)" }}>
+                            {`${entry.name}: ${entry.value}`}
                         </p>
                     ))}
                 </div>
@@ -321,8 +276,8 @@ const Dashboard = () => {
         return null;
     }
 
-    const recentOrders = dashboardData.recentOrders || [];
-    const recentCustomers = dashboardData.recentCustomers || [];
+    const recentInquiries = dashboardData.recentWhiteLabels || dashboardData.recentOrders || [];
+    const recentEmployees = dashboardData.recentEmployees || dashboardData.recentCustomers || [];
 
     return (<>
         {alertMessage && <AlertMessage message={alertMessage} onClose={() => setAlertMessage("")} />}
@@ -356,15 +311,40 @@ const Dashboard = () => {
             <div className="dashboard-row row-1">
                 <div className="chart-container monthly-revenue-chart">
                     <Typography variant="h6" className="chart-title">
-                        {translations.monthlyrevenue}
+                        {translations.MonthlyInquiries || "Monthly Inquiries & Leads"}
                     </Typography>
                     <ResponsiveContainer width="100%" height={350}>
                         <AreaChart data={chartData} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+                            <defs>
+                                <linearGradient id="whiteLabelGradient" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="5%" stopColor="var(--primary-color)" stopOpacity={0.4} />
+                                    <stop offset="95%" stopColor="var(--primary-color)" stopOpacity={0.0} />
+                                </linearGradient>
+                                <linearGradient id="contactUsGradient" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="5%" stopColor="#0284c7" stopOpacity={0.35} />
+                                    <stop offset="95%" stopColor="#0284c7" stopOpacity={0.0} />
+                                </linearGradient>
+                            </defs>
                             <XAxis dataKey="month" className="chart-axis" interval={0} axisLine={false} tickLine={false} />
-                            <YAxis className="chart-axis" axisLine={false} tickLine={false} width={95} tickFormatter={(value) => formatCurrency(value, currencyDetails)} />
-                            <Tooltip content={(props) => <CustomTooltip {...props} translations={translations} currencyDetails={currencyDetails} formatCurrency={formatCurrency} />} />
+                            <YAxis className="chart-axis" axisLine={false} tickLine={false} width={45} allowDecimals={false} tickFormatter={(value) => Math.round(value)} />
+                            <Tooltip content={<InquiryTooltip />} />
                             <Legend className="chart-legend" />
-                            <Area type="monotone" dataKey="Revenue" stroke="var(--primary-color)" fill="var(--primary-color)" fillOpacity={0.3} strokeWidth={4} name={translations.monthlyrevenue} />
+                            <Area
+                                type="monotone"
+                                dataKey="whiteLabelCount"
+                                stroke="var(--primary-color)"
+                                fill="url(#whiteLabelGradient)"
+                                strokeWidth={3}
+                                name={translations.WhiteLabelInquiries || "White-Label Inquiries"}
+                            />
+                            <Area
+                                type="monotone"
+                                dataKey="contactUsCount"
+                                stroke="#0284c7"
+                                fill="url(#contactUsGradient)"
+                                strokeWidth={2.5}
+                                name={translations.ContactUs || "Contact Us"}
+                            />
                         </AreaChart>
                     </ResponsiveContainer>
                 </div>
@@ -372,41 +352,47 @@ const Dashboard = () => {
                 <div className="recently-added-container">
                     <div className="section-header-wrap">
                         <Typography variant="h6" className="section-title">
-                            {translations.recentorders}
+                            {translations.RecentInquiries || "Recent White-Label Inquiries"}
                         </Typography>
+                        <button className="view-all-btn" onClick={() => navigate('/Support/WhiteLabel')}>
+                            {translations.viewall || "View All"} <ArrowForward />
+                        </button>
                     </div>
-                    {recentOrders.length > 0 ? (
+                    {recentInquiries.length > 0 ? (
                         <div className="recent-orders-list">
-                            {recentOrders.map((order, index) => {
-                                const statusClass = (order.orderstatus || "confirmed").toLowerCase();
+                            {recentInquiries.map((inquiry, index) => {
+                                const statusClass = (inquiry.status || "pending").toLowerCase().replace(/\s+/g, '-');
                                 return (
                                     <div
-                                        key={order._id || index}
+                                        key={inquiry._id || index}
                                         className="order-item-card"
+                                        onClick={() => navigate('/Support/WhiteLabel')}
                                     >
                                         <div className="order-left">
                                             <div className="order-icon-badge">
-                                                <ShoppingBag />
+                                                <WorkspacePremium />
                                             </div>
                                             <div className="order-info">
                                                 <div className="order-number">
-                                                    #ORD-{order.ordernumber || order.orderid}
+                                                    {inquiry.fullName || "Inquiry Lead"}
                                                 </div>
-                                                <div className="order-customer">
-                                                    {order.customername || order.customeremail || translations.valuedclient}
+                                                <div className="order-customer" title={inquiry.email}>
+                                                    {inquiry.company ? `${inquiry.company} • ` : ""}{inquiry.licenseModel || inquiry.email}
                                                 </div>
                                                 <div className="order-date">
-                                                    {formatDisplayDate(order.createdAt)}
+                                                    {inquiry.formattedDate || formatDisplayDate(inquiry.createdAt)}
                                                 </div>
                                             </div>
                                         </div>
                                         <div className="order-right">
-                                            <div className="order-price">
-                                                {formatCurrency(order.total, order.currencydetails || currencyDetails)}
-                                            </div>
                                             <span className={`order-status-pill ${statusClass}`}>
-                                                {order.orderstatus || "Confirmed"}
+                                                {inquiry.status || "Pending"}
                                             </span>
+                                            {inquiry.timeline && (
+                                                <div className="order-date" style={{ fontSize: '10.5px' }}>
+                                                    {inquiry.timeline}
+                                                </div>
+                                            )}
                                         </div>
                                     </div>
                                 );
@@ -415,7 +401,7 @@ const Dashboard = () => {
                     ) : (
                         <div className="no-data-message">
                             <Typography variant="body2">
-                                {translations.notfoundrecentorders}
+                                {translations.NoRecentInquiries || "No recent inquiries found"}
                             </Typography>
                         </div>
                     )}
@@ -426,44 +412,42 @@ const Dashboard = () => {
                 <div className="recently-added-container">
                     <div className="section-header-wrap">
                         <Typography variant="h6" className="section-title">
-                            {translations.Employee || "Employees"}
+                            {translations.RecentEmployees || translations.Employee || "Employees"}
                         </Typography>
                         <button className="view-all-btn" onClick={() => navigate('/User/Employee')}>
-                            {translations.viewall} <ArrowForward />
+                            {translations.viewall || "View All"} <ArrowForward />
                         </button>
                     </div>
-                    {recentCustomers.length > 0 ? (
+                    {recentEmployees.length > 0 ? (
                         <div className="recent-clients-list">
-                            {recentCustomers.map((cust, index) => (
+                            {recentEmployees.map((emp, index) => (
                                 <div
-                                    key={cust._id || index}
+                                    key={emp._id || index}
                                     className="client-item-card"
                                     onClick={() => navigate('/User/Employee')}
                                 >
                                     <div className="client-left">
                                         <div className="client-avatar">
-                                            {getInitials(cust.fullname)}
+                                            {getInitials(emp.fullname || `${emp.firstname || ''} ${emp.lastname || ''}`)}
                                         </div>
                                         <div className="client-info">
                                             <div className="client-name">
-                                                {cust.fullname || translations.client}
+                                                {emp.fullname || `${emp.firstname || ''} ${emp.lastname || ''}`.trim() || emp.email}
                                             </div>
                                             <div className="client-email">
-                                                {cust.email || ""}
+                                                {emp.email || ""}
                                             </div>
-                                            {cust.phone && (
-                                                <div className="client-phone">
-                                                    {cust.phone}
-                                                </div>
-                                            )}
+                                            <div className="client-phone">
+                                                {emp.role || "Employee"}{emp.phone ? ` • ${emp.phone}` : ""}
+                                            </div>
                                         </div>
                                     </div>
                                     <div className="client-right">
                                         <div className="client-date">
-                                            {formatDisplayDate(cust.createdAt)}
+                                            {emp.formattedDate || formatDisplayDate(emp.createdAt)}
                                         </div>
-                                        <span className="client-status-badge">
-                                            {translations.active}
+                                        <span className={`client-status-badge ${emp.status ? 'active' : 'inactive'}`}>
+                                            {emp.status ? (translations.active || "Active") : (translations.inactive || "Inactive")}
                                         </span>
                                     </div>
                                 </div>
@@ -472,7 +456,7 @@ const Dashboard = () => {
                     ) : (
                         <div className="no-data-message">
                             <Typography variant="body2">
-                                {translations.notfoundrecentcustomers}
+                                {translations.NoRecentEmployees || translations.notfoundrecentcustomers || "No employees found"}
                             </Typography>
                         </div>
                     )}
@@ -480,15 +464,15 @@ const Dashboard = () => {
 
                 <div className="chart-container monthly-order-chart">
                     <Typography variant="h6" className="chart-title">
-                        {translations.monthlyorders}
+                        {translations.MonthlySubscribers || "Monthly Subscribers"}
                     </Typography>
                     <ResponsiveContainer width="100%" height={350}>
-                        <BarChart data={chartData} barSize={22} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+                        <BarChart data={chartData} barSize={24} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
                             <XAxis dataKey="month" className="chart-axis" axisLine={false} tickLine={false} />
-                            <YAxis className="chart-axis" axisLine={false} tickLine={false} width={65} allowDecimals={false} tickFormatter={(value) => Math.round(value)} />
-                            <Tooltip content={(props) => <CustomTooltip {...props} translations={translations} currencyDetails={currencyDetails} formatCurrency={formatCurrency} />} />
+                            <YAxis className="chart-axis" axisLine={false} tickLine={false} width={45} allowDecimals={false} tickFormatter={(value) => Math.round(value)} />
+                            <Tooltip content={<SubscriberTooltip />} />
                             <Legend className="chart-legend" />
-                            <Bar dataKey="Orders" fill="var(--primary-color)" name={translations.orders} radius={[10, 10, 10, 10]} isAnimationActive={false} />
+                            <Bar dataKey="subscriberCount" fill="var(--primary-color)" name={translations.Subscribers || "Subscribers"} radius={[8, 8, 0, 0]} isAnimationActive={false} />
                         </BarChart>
                     </ResponsiveContainer>
                 </div>

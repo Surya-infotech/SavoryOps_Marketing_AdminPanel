@@ -320,7 +320,7 @@
                             border-radius: 20px;
                             text-transform: capitalize;
 
-                            &.confirmed, &.delivered {
+                            &.confirmed, &.delivered, &.closed {
                                 background: #dcfce7;
                                 color: #15803d;
                             }
@@ -330,12 +330,12 @@
                                 color: #b45309;
                             }
 
-                            &.processing {
+                            &.processing, &.in-progress, &.in_progress {
                                 background: #e0e7ff;
                                 color: #4338ca;
                             }
 
-                            &.shipped {
+                            &.shipped, &.contacted {
                                 background: #e0f2fe;
                                 color: #0369a1;
                             }

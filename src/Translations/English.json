@@ -242,5 +242,11 @@
     "Requirements": "Requirements",
     "statusupdatedsuccessfully": "Status updated successfully.",
     "Subject": "Subject",
-    "Date": "Date"
+    "Date": "Date",
+    "MonthlyInquiries": "Monthly Inquiries & Leads",
+    "RecentInquiries": "Recent White-Label Inquiries",
+    "NoRecentInquiries": "No recent inquiries found",
+    "RecentEmployees": "Recent Employees",
+    "NoRecentEmployees": "No employees found",
+    "MonthlySubscribers": "Monthly Subscribers"
 }
