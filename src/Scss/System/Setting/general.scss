@@ -1,0 +1,192 @@
+@use "../../Customize/Mixin/form_mixin.scss" as form_mixin;
+@use "../../Customize/var.scss" as var;
+
+.form-row {
+    @include form_mixin.form-row;
+
+    &.form-row-three,
+    &.form-row-3 {
+        @include form_mixin.form-row-three;
+    }
+}
+
+.form-group {
+    label {
+        @include form_mixin.form_label;
+    }
+
+    input,
+    textarea {
+        @include form_mixin.form_input;
+    }
+
+    .description-counter {
+        text-align: right;
+        font-size: 12px;
+        color: inherit;
+        margin-top: 4px;
+        transition: color 0.2s ease;
+
+        &.max-reached {
+            color: #d32f2f;
+            font-weight: 500;
+        }
+    }
+
+    .phone-input-wrapper {
+        width: 100% !important;
+        margin-bottom: 15px !important;
+        position: relative;
+        z-index: 1;
+
+        .phone-error-message {
+            color: #dc3545;
+            font-size: 12px;
+            margin-top: 4px;
+            display: block;
+        }
+
+        .PhoneInput {
+            display: flex;
+            width: 100% !important;
+            border: var.$form_input_border_color !important;
+            border-radius: 5px;
+            background-color: var(--form-input-color);
+            transition: all 0.3s ease;
+            overflow: visible !important;
+            position: relative;
+
+            &:hover {
+                box-shadow: var.$box-shadow !important;
+            }
+
+            &:focus-within {
+                box-shadow: var.$box-shadow !important;
+            }
+
+            .PhoneInputCountry {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 4px 8px;
+                border-right: none !important;
+                background-color: transparent !important;
+                cursor: pointer;
+                min-width: 50px;
+                max-width: 60px;
+                gap: 6px;
+                position: relative;
+                z-index: 2;
+
+                .PhoneInputCountryIcon {
+                    display: block !important;
+                    width: 20px;
+                    height: 15px;
+                    flex-shrink: 0;
+                    margin: 0;
+                }
+
+                .PhoneInputCountrySelect {
+                    position: absolute !important;
+                    width: 100% !important;
+                    height: 100% !important;
+                    top: 0 !important;
+                    left: 0 !important;
+                    opacity: 0 !important;
+                    cursor: pointer !important;
+                    z-index: 3 !important;
+                    background: transparent !important;
+                    border: none !important;
+                }
+
+                .PhoneInputCountrySelectArrow {
+                    display: inline-block !important;
+                    color: var(--text-color);
+                    font-size: 10px;
+                    opacity: 0.6;
+                    transition: opacity 0.2s ease;
+                    flex-shrink: 0;
+                    margin: 0;
+                    pointer-events: none;
+                }
+
+                &:hover {
+                    background-color: transparent !important;
+
+                    .PhoneInputCountrySelectArrow {
+                        opacity: 1;
+                    }
+                }
+            }
+
+            .PhoneInputInput {
+                flex: 1;
+                padding: 8px 12px;
+                border: none;
+                border-radius: 0;
+                font-size: 14px;
+                line-height: 1.5;
+                color: var(--text-color);
+                background-color: transparent;
+                margin-bottom: 0px !important;
+                outline: none;
+                box-sizing: border-box;
+
+                &::placeholder {
+                    color: var(--text-color);
+                    opacity: 0.6;
+                }
+
+                &:focus {
+                    outline: none !important;
+                    box-shadow: none !important;
+                }
+            }
+
+            &.PhoneInput--invalid {
+                border-color: #dc3545 !important;
+
+                .PhoneInputInput {
+                    color: #dc3545;
+                }
+
+                .PhoneInputCountry {
+                    border-right: none !important;
+                }
+
+                &:focus-within {
+                    box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.25) !important;
+                }
+            }
+        }
+
+        &.has-phone-error {
+            .PhoneInput {
+                border-color: #dc3545 !important;
+
+                .PhoneInputInput {
+                    color: #dc3545;
+                }
+
+                .PhoneInputCountry {
+                    border-right: none !important;
+                }
+
+                &:focus-within {
+                    box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.25) !important;
+                }
+            }
+        }
+
+        input {
+            margin-bottom: 0px !important;
+        }
+    }
+}
+
+.button-group {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    margin-top: 20px;
+}

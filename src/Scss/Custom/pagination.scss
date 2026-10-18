@@ -1,0 +1,140 @@
+@use "../Customize/var.scss" as var;
+
+.paginationdiv {
+    margin-top: 20px !important;
+    margin-bottom: 0 !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    flex-wrap: wrap;
+    gap: 12px;
+
+    .page-size-dropdown {
+        border-radius: 5px !important;
+        width: 80px !important;
+
+        select {
+            background-color: var(--page-color) !important;
+            border: 1px solid var(--border-color) !important;
+            border-radius: 6px !important;
+            padding: 6px 8px !important;
+            color: var(--text-color) !important;
+            font-size: 14px !important;
+            cursor: pointer;
+            outline: none;
+
+            &:focus {
+                border-color: var(--primary-color) !important;
+                box-shadow: 0 0 0 0.2rem color-mix(in srgb, var(--primary-color) 35%, transparent) !important;
+            }
+
+            option {
+                color: var(--text-color) !important;
+            }
+
+            option:hover {
+                background-color: #f1f3f5 !important;
+            }
+        }
+    }
+
+    .pagination {
+        display: flex;
+        align-items: center;
+        margin: 0 !important;
+        gap: 4px;
+
+        button.page-link,
+        .page-link {
+            background-color: var(--page-color) !important;
+            color: var(--text-color) !important;
+            border: 1px solid var(--primary-color) !important;
+            border-radius: 4px !important;
+            padding: 6px 14px !important;
+            font-size: 14px !important;
+            line-height: 1.4;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .page-link:hover {
+            background-color: color-mix(in srgb, var(--secondary-color) 38%, transparent) !important;
+            color: var(--primary-color) !important;
+            border-color: var(--primary-color) !important;
+        }
+
+        .page-link:focus {
+            box-shadow: 0 0 0 0.2rem color-mix(in srgb, var(--primary-color) 35%, transparent) !important;
+        }
+
+        .page-item.active .page-link {
+            background-color: var(--primary-color) !important;
+            border-color: var(--primary-color) !important;
+            color: #fff !important;
+            font-weight: 600 !important;
+        }
+
+        .page-item.disabled .page-link {
+            border-color: color-mix(in srgb, var(--primary-color) 45%, #ccc) !important;
+            opacity: 0.55 !important;
+            cursor: not-allowed !important;
+        }
+    }
+
+    .records-info {
+        color: var(--text-color) !important;
+        font-weight: 400 !important;
+        font-size: 14px !important;
+    }
+}
+
+.paginationdiv .page-size-dropdown {
+    margin-left: 10px !important;
+}
+
+.paginationdiv.rtl-pagination,
+.paginationdiv[dir="rtl"],
+body.rtl-mode .paginationdiv {
+    direction: rtl;
+
+    .page-size-dropdown {
+        margin-left: 0 !important;
+        margin-right: 10px !important;
+
+        select {
+            direction: rtl !important;
+            text-align: right !important;
+            background-position: left 0.75rem center !important;
+            padding-left: 2rem !important;
+            padding-right: 0.75rem !important;
+        }
+    }
+
+    .records-info {
+        direction: rtl !important;
+        text-align: center !important;
+    }
+
+    .pagination {
+        direction: rtl !important;
+
+        .page-item:first-child .page-link {
+            border-top-right-radius: 4px !important;
+            border-bottom-right-radius: 4px !important;
+            border-top-left-radius: 0 !important;
+            border-bottom-left-radius: 0 !important;
+        }
+
+        .page-item:last-child .page-link {
+            border-top-left-radius: 4px !important;
+            border-bottom-left-radius: 4px !important;
+            border-top-right-radius: 0 !important;
+            border-bottom-right-radius: 0 !important;
+        }
+
+        .page-item:not(:first-child) .page-link {
+            margin-left: 0 !important;
+            margin-right: -1px !important;
+        }
+    }
+}

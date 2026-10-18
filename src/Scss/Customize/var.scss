@@ -1,0 +1,77 @@
+$primary_text_color: var(--primary-color);
+
+$box-shadow: 0 0 0 0.25rem color-mix(in srgb, var(--primary-color) 35%, transparent);
+$font-family: 'Poppins', sans-serif;
+$hover_color: var(--secondary-color);
+$text_hover_color: var(--primary-color);
+
+$table_heading_font_weight: 650;
+$table_td_font_color: black;
+$table_td_font_weight: 500;
+$table_td_tdclick: var(--primary-color);
+
+$table_edit_icon_color: var(--primary-color);
+$table_edit_icon_bgcolor: var(--primary-color);
+$table_edit_icon_hovercolor: white;
+$table_delete_icon_color: red;
+$table_delte_icon_hovercolor: white;
+
+$page_heading_font_size: 18px;
+$page_heading_font_color: gray;
+$page_box_shadow_color: var(--shadow-md);
+
+$add_btn_padding: 10px 20px;
+$add_btn_bgcolor: #007bff;
+$add_btn_text_color: white;
+$add_btn_hover_bgcolor: #0056b3;
+$add_btn_font_size: 16px;
+
+$form_label_weight: bold;
+$form_label_bottom: 5px;
+$form_input_border_color: 1px solid var(--border-color);
+
+$save_btn_color: var(--primary-color);
+$save_btn_hover_bgcolor: color-mix(in srgb, var(--primary-color) 78%, black);
+$cancel_btn_hover_bgcolor: #A9A9A9;
+
+$primary_color: #028802;
+$secondary_color: #69e869;
+
+$light-page_color: #ffffff;
+$light-text: black;
+$light-background_color: white;
+$light-arrow-color: #EFEFEF;
+$light-table-tr-color: #ffffff;
+$light-form-input-color: white;
+$light-cancel-btn-color: gray;
+$light-pagination-color: white;
+
+:root {
+    /* Brand (set at runtime from API) */
+    --primary-color: #{$primary_color};
+    --secondary-color: #{$secondary_color};
+
+    /* Premium neutrals (SavoryOpsAdminPanel parity) */
+    --border-color: rgba(17, 24, 39, 0.14);
+    --muted-text: rgba(17, 24, 39, 0.64);
+
+    /* Radii */
+    --radius-sm: 10px;
+    --radius-md: 12px;
+    --radius-lg: 14px;
+
+    /* Shadows */
+    --shadow-sm: 0 6px 16px rgba(0, 0, 0, 0.08);
+    --shadow-md: 0 12px 28px rgba(0, 0, 0, 0.10);
+    --shadow-lg: 0 18px 44px rgba(0, 0, 0, 0.14);
+
+    --background-color: #{$light-background_color};
+    --text-color: #{$light-text};
+    --body-background-color: #{$light-background_color};
+    --arrow-color:#{$light-arrow-color};
+    --page-color:#{$light-page_color};
+    --table-tr-color:#{$light-table-tr-color};
+    --form-input-color:#{$light-form-input-color};
+    --cancel-btn-color:#{$light-cancel-btn-color};
+    --pagination-color:#{$light-pagination-color};
+}

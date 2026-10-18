@@ -1,0 +1,327 @@
+@use "../var.scss" as var;
+
+@mixin form_label {
+    display: block;
+    font-weight: var.$form_label_weight !important;
+    margin-bottom: var.$form_label_bottom !important;
+
+    [dir="rtl"] &,
+    body.rtl-mode & {
+        text-align: right;
+    }
+
+    .required,
+    .required-asterisk,
+    .text-danger {
+        color: #dc3545 !important;
+    }
+}
+
+@mixin form_row {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+
+    .form-group {
+        width: 48%;
+        margin-right: 0;
+        margin-left: 0;
+
+        &.full-width {
+            width: 100% !important;
+            margin-right: 0 !important;
+            margin-left: 0 !important;
+        }
+
+        .switch-wrapper {
+            padding-top: 6px;
+        }
+
+        input {
+            width: 100%;
+
+            &::placeholder {
+                color: var(--text-color) !important;
+            }
+        }
+    }
+}
+
+@mixin form-row-three {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    gap: 20px;
+
+    .form-group {
+        width: calc((100% - 40px) / 3);
+        flex: 1 1 0;
+        min-width: 0;
+        margin-right: 0;
+        margin-left: 0;
+
+        input {
+            width: 100%;
+
+            &::placeholder {
+                color: var(--text-color) !important;
+            }
+        }
+    }
+
+    @media (max-width: 768px) {
+        flex-direction: column;
+        gap: 0;
+
+        .form-group {
+            width: 100% !important;
+        }
+    }
+}
+
+@mixin form_input {
+    background-color: var(--form-input-color);
+    display: block;
+    padding: 10px 12px;
+    border: var.$form_input_border_color !important;
+    border-radius: var(--radius-sm);
+    margin-bottom: 15px !important;
+    outline: none;
+    color: var(--text-color) !important;
+
+    [dir="rtl"] &,
+    body.rtl-mode & {
+        text-align: right;
+    }
+
+    &:focus,
+    &:hover {
+        box-shadow: 0 0 0 0.25rem color-mix(in srgb, var(--primary-color) 35%, transparent) !important;
+    }
+
+    &::placeholder {
+        color: var(--text-color) !important;
+    }
+
+    &[type="number"] {
+        -moz-appearance: textfield;
+        -webkit-appearance: none;
+        appearance: none;
+
+        &::-webkit-inner-spin-button,
+        &::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+    }
+
+    &[type="radio"] {
+
+        &:hover,
+        &:focus {
+            box-shadow: none !important;
+        }
+    }
+}
+
+@mixin radio_group {
+    display: flex;
+    align-items: center !important;
+    gap: 20px;
+    flex-wrap: wrap;
+
+    .radio-label {
+        display: inline-flex;
+        align-items: center !important;
+        gap: 10px;
+        cursor: pointer;
+        font-weight: normal !important;
+        min-width: 120px;
+        user-select: none;
+
+        input[type="radio"] {
+            appearance: none;
+            -webkit-appearance: none;
+            width: 18px !important;
+            height: 18px !important;
+            min-width: 18px !important;
+            min-height: 18px !important;
+            padding: 0 !important;
+            margin: 0 !important;
+            margin-bottom: 0 !important;
+            border: 2px solid var(--border-color, #ccc) !important;
+            border-radius: 50%;
+            display: inline-block;
+            position: relative;
+            cursor: pointer;
+            outline: none;
+            background-color: var(--form-input-color, #fff);
+            flex-shrink: 0;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+            &:checked {
+                border-color: var(--primary-color) !important;
+            }
+        }
+
+        input[type="radio"]::before {
+            content: "";
+            width: 10px;
+            height: 10px;
+            background-color: var(--primary-color);
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            transition: 0.2s ease-in-out;
+        }
+
+        input[type="radio"]:checked::before {
+            transform: translate(-50%, -50%) scale(1);
+        }
+    }
+}
+
+@mixin dropdown {
+    padding: 8px !important;
+    display: flex !important;
+    width: 100% !important;
+    text-align: left !important;
+    background-color: var(--form-input-color) !important;
+    color: var(--text-color) !important;
+    align-items: center !important;
+    border: var.$form_input_border_color !important;
+    border-radius: var(--radius-sm);
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    margin-bottom: 15px !important;
+
+    [dir="rtl"] &,
+    body.rtl-mode & {
+        text-align: right !important;
+    }
+
+    &::after {
+        content: none !important;
+    }
+
+    &:hover,
+    &:active {
+        box-shadow: 0 0 0 0.25rem color-mix(in srgb, var(--primary-color) 35%, transparent) !important;
+    }
+}
+
+@mixin dropdownul {
+    max-height: 200px;
+    overflow-y: auto;
+    overflow-x: auto !important;
+    display: block;
+    min-width: 100% !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-top: -15px !important;
+    border-color: var(--border-color);
+    background-color: var(--form-input-color);
+    color: var(--text-color) !important;
+    z-index: 1000 !important;
+
+    li {
+        margin-top: 5px;
+        margin-left: 10px;
+        margin-right: 10px;
+        cursor: pointer;
+
+        &:not(.dropdown-search-item) {
+            width: max-content !important;
+            min-width: calc(100% - 20px) !important;
+        }
+    }
+
+    a {
+        display: block;
+        width: max-content !important;
+        min-width: 100% !important;
+        white-space: nowrap;
+        color: var(--text-color) !important;
+        border-radius: 10px;
+        padding: 6px 12px !important;
+
+        &:hover,
+        &:focus {
+            background-color: color-mix(in srgb, var(--primary-color) 12%, var(--background-color));
+            color: var(--text-color) !important;
+        }
+
+        &:active {
+            background-color: color-mix(in srgb, var(--primary-color) 18%, var(--background-color));
+            color: var(--text-color) !important;
+        }
+
+        &.selected {
+            background-color: color-mix(in srgb, var(--primary-color) 18%, var(--background-color));
+            color: var(--text-color) !important;
+            font-weight: 600;
+        }
+    }
+
+    [dir="rtl"] &,
+    body.rtl-mode &,
+    &[dir="rtl"],
+    &.rtl-dropdownul {
+        direction: rtl;
+        text-align: right !important;
+
+        li {
+            text-align: right !important;
+            direction: rtl;
+        }
+
+        a,
+        .dropdown-item {
+            text-align: right !important;
+            direction: rtl;
+        }
+    }
+}
+
+@mixin btn_group {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 40px;
+}
+
+@mixin btn {
+    width: 100px;
+    padding: 5px;
+}
+
+@mixin save_btn {
+    background-color: var.$save_btn_color !important;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+        background-color: var.$save_btn_hover_bgcolor !important;
+    }
+}
+
+@mixin cancel_btn {
+    background-color: var(--cancel-btn-color) !important;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+        background-color: var.$cancel_btn_hover_bgcolor !important;
+    }
+}

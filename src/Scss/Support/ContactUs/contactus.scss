@@ -1,0 +1,29 @@
+@use "../../Customize/Mixin/page_mixin.scss" as mixin;
+
+.ContactUs-container {
+    @include mixin.main_page;
+
+    .contactus-container {
+        @include mixin.page;
+
+        .contactus-headingname {
+            @include mixin.heading_name_text;
+
+            &::before {
+                @include mixin.heading_name;
+            }
+        }
+
+        .contactus-form-container {
+            @include mixin.page_size;
+
+            .contactus-header {
+                @include mixin.page_header;
+            }
+        }
+    }
+}
+
+.alert {
+    @include mixin.alert;
+}

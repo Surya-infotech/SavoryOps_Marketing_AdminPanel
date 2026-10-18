@@ -1,0 +1,18 @@
+@use "../../Customize/Mixin/form_mixin.scss" as form_mixin;
+
+.search-input-container {
+    display: inline-flex;
+    align-items: center;
+    flex-shrink: 0;
+    margin-right: 15px;
+
+    .search-input {
+        @include form_mixin.form_input;
+        margin-bottom: 0 !important;
+        margin-right: 0 !important;
+        min-width: 250px;
+        width: 250px;
+        height: 44px;
+        box-sizing: border-box;
+    }
+}

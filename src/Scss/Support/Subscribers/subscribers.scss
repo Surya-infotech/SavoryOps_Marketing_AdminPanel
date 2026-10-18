@@ -1,0 +1,29 @@
+@use "../../Customize/Mixin/page_mixin.scss" as mixin;
+
+.Subscribers-container {
+    @include mixin.main_page;
+
+    .subscribers-container {
+        @include mixin.page;
+
+        .subscribers-headingname {
+            @include mixin.heading_name_text;
+
+            &::before {
+                @include mixin.heading_name;
+            }
+        }
+
+        .subscribers-form-container {
+            @include mixin.page_size;
+
+            .subscribers-header {
+                @include mixin.page_header;
+            }
+        }
+    }
+}
+
+.alert {
+    @include mixin.alert;
+}

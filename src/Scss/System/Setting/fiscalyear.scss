@@ -1,0 +1,17 @@
+@use "../../Customize/Mixin/page_mixin.scss" as page_mixin;
+
+.fiscal-year-container {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+}
+
+.add-new-button-section {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 20px;
+}
+
+.add-new-button-section .add-new-btn {
+    @include page_mixin.add_new_btn;
+}

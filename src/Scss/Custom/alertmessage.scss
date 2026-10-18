@@ -1,0 +1,50 @@
+.alert-message {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: linear-gradient(
+        135deg,
+        color-mix(in srgb, var(--primary-color) 92%, #000) 0%,
+        color-mix(in srgb, var(--primary-color) 72%, #000) 100%
+    );
+    color: #fff;
+    padding: 12px 16px;
+    border-radius: var(--radius-md);
+    z-index: 1001;
+    box-shadow: var(--shadow-md);
+    border: 1px solid color-mix(in srgb, var(--primary-color) 55%, transparent);
+    white-space: nowrap;
+    max-width: min(420px, calc(100vw - 40px));
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    &.slide-in {
+        animation: slide-in 0.5s ease-out forwards;
+    }
+
+    &.slide-out {
+        animation: slide-out 0.5s ease-in forwards;
+    }
+}
+
+@keyframes slide-in {
+    from {
+        right: -200px;
+    }
+
+    to {
+        right: 20px;
+    }
+}
+
+@keyframes slide-out {
+    from {
+        right: 20px;
+        opacity: 1;
+    }
+
+    to {
+        right: -200px;
+        opacity: 0;
+    }
+}

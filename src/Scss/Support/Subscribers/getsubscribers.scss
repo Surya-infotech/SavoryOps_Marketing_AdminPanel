@@ -1,0 +1,39 @@
+@use "../../Customize/Mixin/table_mixin.scss" as table_mixin;
+
+.tablediv {
+    @include table_mixin.main_table;
+
+    .subscriberstable {
+        @include table_mixin.table;
+
+        thead {
+            th {
+                @include table_mixin.table_thead;
+            }
+
+            td {
+                @include table_mixin.table_td;
+            }
+        }
+
+        tbody {
+            tr {
+                @include table_mixin.table_tr;
+            }
+
+            td {
+                @include table_mixin.table_td;
+            }
+
+            .subscriber-email-cell {
+                font-weight: 500;
+                word-break: break-all;
+            }
+
+            .subscriber-source-cell {
+                color: #666;
+                font-size: 0.875rem;
+            }
+        }
+    }
+}

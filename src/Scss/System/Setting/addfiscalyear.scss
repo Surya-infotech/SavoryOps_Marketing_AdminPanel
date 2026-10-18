@@ -1,0 +1,60 @@
+@use "../../Customize/Mixin/page_mixin.scss" as mixin;
+@use "../../Customize/Mixin/form_mixin.scss" as form_mixin;
+
+.AddFiscal-container {
+    @include mixin.main_page;
+
+    .Addfiscal-container {
+        @include mixin.page;
+
+        .Addfiscal-headingname {
+            @include mixin.heading_name_text;
+
+            &::before {
+                @include mixin.heading_name;
+            }
+        }
+
+        .Addfiscal-form-container {
+            @include mixin.page_size;
+
+            .form-row {
+                @include form_mixin.form-row;
+            }
+
+            .form-group {
+                label {
+                    @include form_mixin.form_label;
+                }
+
+                input {
+                    @include form_mixin.form_input;
+                }
+
+                .react-datepicker-wrapper {
+                    width: 100%;
+                }
+            }
+
+            .button-group {
+                @include form_mixin.btn_group;
+
+                button {
+                    @include form_mixin.btn;
+                }
+            }
+
+            .submit-btn {
+                @include form_mixin.save_btn;
+            }
+
+            .cancelbtn {
+                @include form_mixin.cancel_btn;
+            }
+        }
+    }
+}
+
+.alert {
+    @include mixin.alert;
+}

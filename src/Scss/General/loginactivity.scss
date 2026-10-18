@@ -1,0 +1,100 @@
+@use "../Customize/Mixin/page_mixin.scss" as mixin;
+@use "../Customize/Mixin/table_mixin.scss" as table_mixin;
+
+.LoginActivity-container {
+  @include mixin.main_page;
+
+  .login-activity-container {
+    @include mixin.page;
+
+    .login-activity-headingname {
+      @include mixin.heading_name_text;
+
+      &::before {
+        @include mixin.heading_name;
+      }
+    }
+
+    .login-activity-form-container {
+      @include mixin.page_size;
+
+      .login-activity-header {
+        @include mixin.page_header;
+        margin-bottom: 20px;
+      }
+
+      .tablediv {
+        @include table_mixin.main_table;
+
+        .loginactivitytable {
+          @include table_mixin.table;
+
+          thead {
+            th {
+              @include table_mixin.table_thead;
+              cursor: pointer;
+              user-select: none;
+
+              &:hover {
+                opacity: 0.8;
+              }
+
+              svg {
+                vertical-align: middle;
+                margin-left: 5px;
+                font-size: 16px;
+                opacity: 0.7;
+              }
+            }
+          }
+
+          tbody {
+            tr {
+              @include table_mixin.table_tr;
+            }
+
+            td {
+              @include table_mixin.table_td;
+
+              &.browser-details-td {
+                max-width: 250px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  &.rtl-loginactivity,
+  &[dir="rtl"],
+  body.rtl-mode & {
+    direction: rtl;
+    text-align: right;
+
+    .login-activity-header {
+      justify-content: flex-start !important;
+
+      .search-input-container {
+        margin-right: 0 !important;
+        margin-left: auto !important;
+      }
+    }
+
+    .tablediv {
+      direction: rtl;
+
+      .loginactivitytable {
+        direction: rtl;
+
+        thead th svg {
+          margin-left: 0 !important;
+          margin-right: 5px !important;
+        }
+      }
+    }
+  }
+}

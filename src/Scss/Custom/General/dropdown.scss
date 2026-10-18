@@ -1,0 +1,97 @@
+@use "../../Customize/var.scss" as var;
+@use "../../Customize/Mixin/form_mixin.scss" as form_mixin;
+
+.dropdownbtn {
+    @include form_mixin.dropdown;
+}
+
+.dropdown-icon {
+    margin-left: auto !important;
+}
+
+[dir="rtl"] .dropdown-icon,
+body.rtl-mode .dropdown-icon,
+.rtl-dropdown .dropdown-icon,
+.rtl-horinav .dropdown-icon {
+    margin-left: 0 !important;
+    margin-right: auto !important;
+}
+
+[dir="rtl"] .dropdownbtn,
+body.rtl-mode .dropdownbtn,
+.rtl-dropdown .dropdownbtn,
+.rtl-horinav .dropdownbtn {
+    text-align: right !important;
+}
+
+.dropdownul {
+    @include form_mixin.dropdownul;
+    padding-top: 0 !important;
+    max-height: 300px !important;
+}
+
+[dir="rtl"] .dropdownul,
+body.rtl-mode .dropdownul,
+.rtl-horinav .dropdownul,
+.rtl-dropdownul {
+    direction: rtl;
+    text-align: right !important;
+
+    li {
+        text-align: right !important;
+        direction: rtl;
+    }
+
+    a,
+    .dropdown-item {
+        text-align: right !important;
+        direction: rtl;
+    }
+
+    .dropdown-search-item {
+        direction: rtl;
+        text-align: right;
+
+        .dropdown-search-input {
+            direction: rtl;
+            text-align: right;
+        }
+    }
+}
+
+.dropdown-search-item {
+    position: sticky;
+    top: 0;
+    background-color: var(--form-input-color);
+    z-index: 10;
+    padding: 8px 10px;
+    margin: 0 !important;
+    border-bottom: 1px solid var(--border-color);
+
+    .dropdown-search-input {
+        width: 100%;
+        padding: 6px 10px;
+        border: var.$form_input_border_color !important;
+        border-radius: var(--radius-sm);
+        background-color: var(--background-color);
+        color: var(--text-color);
+        outline: none;
+        font-size: 13px;
+
+        &:focus {
+            box-shadow: 0 0 0 0.2rem color-mix(in srgb, var(--primary-color) 35%, transparent) !important;
+        }
+
+        &::placeholder {
+            color: color-mix(in srgb, var(--text-color) 50%, transparent);
+        }
+    }
+}
+
+.dropdown-no-record {
+    padding: 10px 15px;
+    color: var(--text-color);
+    font-size: 13px;
+    text-align: center;
+    opacity: 0.7;
+}

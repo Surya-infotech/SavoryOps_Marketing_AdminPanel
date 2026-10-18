@@ -1,0 +1,28 @@
+@use "../../Customize/Mixin/form_mixin.scss" as form_mixin;
+
+.Misc-container {
+    .form-row {
+        @include form_mixin.form-row;
+    }
+
+    .form-group {
+        label {
+            @include form_mixin.form_label;
+        }
+
+        input:not([type="radio"]) {
+            @include form_mixin.form_input;
+        }
+    }
+
+    .button-group {
+        display: flex;
+        justify-content: flex-end;
+        gap: 15px;
+        margin-top: 20px;
+
+        .submit-btn {
+            @include form_mixin.save_btn;
+        }
+    }
+}
