@@ -283,7 +283,6 @@ const GetWhiteLabel = ({ searchValue }) => {
                                                         <WhatsAppIcon fontSize="small" />
                                                     </IconButton>
                                                 )}
-
                                             </div>
                                         </td>
                                     </tr>
