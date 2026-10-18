@@ -221,7 +221,7 @@ const HoriNavbar = () => {
                         )}
                     </div>
                 )}
-                <div className="profile-section" onClick={toggleDropdown} title={translations.Profile || "Profile"}>
+                <div className="profile-section" onClick={toggleDropdown} title={translations.Profile}>
                     <div className="profile-photo">
                         <PersonIcon />
                     </div>

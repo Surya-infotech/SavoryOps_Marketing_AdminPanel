@@ -16,7 +16,7 @@ const WhiteLabel = () => {
     const [searchValue, setSearchValue] = useState("");
 
     useEffect(() => {
-        const title = translations.WhiteLabelInquiries || translations.WhiteLabel || "White-Label Inquiries";
+        const title = translations.WhiteLabelInquiries;
         document.title = title;
     }, [translations]);
 
@@ -38,14 +38,14 @@ const WhiteLabel = () => {
         <div className="WhiteLabel-container">
             <div className="whitelabel-container">
                 <h6 className="whitelabel-headingname">
-                    {translations.WhiteLabelInquiries || translations.WhiteLabel || "White-Label Inquiries"}
+                    {translations.WhiteLabelInquiries}
                 </h6>
                 <div className="whitelabel-form-container">
                     {alertMessage && <AlertMessage message={alertMessage} onClose={() => setAlertMessage("")} />}
                     {warningMessage && <WarningModal message={warningMessage} onClose={() => setWarningMessage("")} />}
                     <div className="whitelabel-header">
                         <SearchInput
-                            placeholder={translations.searchPlaceholder || "Search inquiries..."}
+                            placeholder={translations.searchPlaceholder}
                             value={searchValue}
                             onChange={(e) => setSearchValue(e.target.value)}
                         />

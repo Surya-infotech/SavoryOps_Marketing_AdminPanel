@@ -196,10 +196,10 @@ const AdminNavbar = () => {
                             <div className="submenu-content">
                                 <li>
                                     <NavLink to="/Support/WhiteLabel" className={navLinkClass('/Support/WhiteLabel')}>
-                                        <NavTooltip title={translations.WhiteLabelInquiries || "White-Label Inquiries"}>
+                                        <NavTooltip title={translations.WhiteLabelInquiries}>
                                             <WorkspacePremiumIcon style={{ color: 'var(--primary-color)', marginRight: isRtl ? 0 : '10px', marginLeft: isRtl ? '10px' : 0 }} />
                                         </NavTooltip>
-                                        {translations.WhiteLabelInquiries || "White-Label Inquiries"}
+                                        {translations.WhiteLabelInquiries}
                                     </NavLink>
                                 </li>
                                 <li>

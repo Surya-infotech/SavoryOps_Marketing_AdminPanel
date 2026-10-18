@@ -57,11 +57,11 @@ const GetWhiteLabel = ({ searchValue }) => {
                         : (Array.isArray(data?.data) ? data.data : (data != null ? [data] : [])));
                 setInquiryList(list);
             } else {
-                setWarningMessage(translations.servererror || "Failed to load inquiries");
+                setWarningMessage(translations.servererror);
                 setShowWarning(true);
             }
         } catch {
-            setWarningMessage(translations.servererror || "Failed to connect to server");
+            setWarningMessage(translations.servererror);
             setShowWarning(true);
         } finally {
             setLoading(false);
@@ -91,13 +91,13 @@ const GetWhiteLabel = ({ searchValue }) => {
                 if (viewModalInquiry && viewModalInquiry._id === id) {
                     setViewModalInquiry((prev) => ({ ...prev, status: newStatus }));
                 }
-                setSuccessMessage(translations.statusupdatedsuccessfully || "Status updated successfully.");
+                setSuccessMessage(translations.statusupdatedsuccessfully);
             } else {
-                setWarningMessage(data.message || "Failed to update status");
+                setWarningMessage(data.message || translations.servererror);
                 setShowWarning(true);
             }
         } catch {
-            setWarningMessage("Error updating status");
+            setWarningMessage(translations.servererror);
             setShowWarning(true);
         }
     };
@@ -192,30 +192,30 @@ const GetWhiteLabel = ({ searchValue }) => {
                         <thead>
                             <tr>
                                 <th onClick={() => handleSort('fullName')}>
-                                    {translations.FullName || "Full Name"} {renderSortIcon('fullName')}
+                                    {translations.FullName} {renderSortIcon('fullName')}
                                 </th>
                                 <th onClick={() => handleSort('company')}>
-                                    {translations.Company || "Company"} {renderSortIcon('company')}
+                                    {translations.Company} {renderSortIcon('company')}
                                 </th>
                                 <th onClick={() => handleSort('email')}>
-                                    {translations.Email || "Email"} {renderSortIcon('email')}
+                                    {translations.Email} {renderSortIcon('email')}
                                 </th>
                                 <th onClick={() => handleSort('phone')}>
-                                    {translations.Phone || "Phone / WhatsApp"} {renderSortIcon('phone')}
+                                    {translations.Phone} {renderSortIcon('phone')}
                                 </th>
                                 <th onClick={() => handleSort('licenseModel')}>
-                                    {translations.LicenseModel || "License Plan"} {renderSortIcon('licenseModel')}
+                                    {translations.LicenseModel} {renderSortIcon('licenseModel')}
                                 </th>
                                 <th onClick={() => handleSort('timeline')}>
-                                    {translations.Timeline || "Timeline"} {renderSortIcon('timeline')}
+                                    {translations.Timeline} {renderSortIcon('timeline')}
                                 </th>
                                 <th onClick={() => handleSort('status')}>
-                                    {translations.Status || "Status"} {renderSortIcon('status')}
+                                    {translations.Status} {renderSortIcon('status')}
                                 </th>
                                 <th onClick={() => handleSort('createdAt')}>
-                                    {translations.InquiryDate || "Date"} {renderSortIcon('createdAt')}
+                                    {translations.InquiryDate} {renderSortIcon('createdAt')}
                                 </th>
-                                <th>{translations.Action || "Actions"}</th>
+                                <th>{translations.Action}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -243,10 +243,10 @@ const GetWhiteLabel = ({ searchValue }) => {
                                                 className={`badge-status ${getStatusClass(inquiry.status)}`}
                                                 style={{ border: 'none', cursor: 'pointer', outline: 'none' }}
                                             >
-                                                <option value="Pending">Pending</option>
-                                                <option value="Contacted">Contacted</option>
-                                                <option value="In Progress">In Progress</option>
-                                                <option value="Closed">Closed</option>
+                                                <option value="Pending">{translations.pending}</option>
+                                                <option value="Contacted">{translations.Contacted}</option>
+                                                <option value="In Progress">{translations.InProgress}</option>
+                                                <option value="Closed">{translations.Closed}</option>
                                             </select>
                                         </td>
                                         <td>{inquiry.formattedDate || inquiry.createdAt || '-'}</td>
@@ -255,7 +255,7 @@ const GetWhiteLabel = ({ searchValue }) => {
                                                 <IconButton
                                                     onClick={() => setViewModalInquiry(inquiry)}
                                                     size="small"
-                                                    title={translations.View || "View Details"}
+                                                    title={translations.viewdetails || translations.View}
                                                     className="view-icon"
                                                 >
                                                     <ViewIcon fontSize="small" />
@@ -265,7 +265,7 @@ const GetWhiteLabel = ({ searchValue }) => {
                                                     <IconButton
                                                         onClick={() => openWhatsAppDirect(inquiry.phone, inquiry.fullName)}
                                                         size="small"
-                                                        title="Chat on WhatsApp"
+                                                        title={translations.ChatonWhatsApp}
                                                         className="wa-icon-btn"
                                                     >
                                                         <WhatsAppIcon fontSize="small" />
@@ -278,7 +278,7 @@ const GetWhiteLabel = ({ searchValue }) => {
                             ) : (
                                 <tr>
                                     <td colSpan="9" style={{ textAlign: 'center', padding: '24px 0' }}>
-                                        {translations.nodatafound || "No white-label inquiries found"}
+                                        {translations.nodatafound}
                                     </td>
                                 </tr>
                             )}
@@ -311,62 +311,62 @@ const GetWhiteLabel = ({ searchValue }) => {
                             <div className="modal-content">
                                 <div className="modal-header">
                                     <h5 className="modal-title">
-                                        {translations.InquiryDetails || "White-Label Inquiry Details"}
+                                        {translations.InquiryDetails}
                                     </h5>
                                     <button
                                         type="button"
                                         className="btn-close"
                                         onClick={() => setViewModalInquiry(null)}
-                                        aria-label={translations.Close || "Close"}
+                                        aria-label={translations.Close}
                                     />
                                 </div>
                                 <div className="modal-body whitelabel-view-modal-body">
                                     <div className="whitelabel-view-item">
-                                        <span className="view-label">{translations.FullName || "Full Name"}</span>
+                                        <span className="view-label">{translations.FullName}</span>
                                         <span className="view-value">{viewModalInquiry.fullName || '-'}</span>
                                     </div>
                                     <div className="whitelabel-view-item">
-                                        <span className="view-label">{translations.Company || "Agency / Company"}</span>
+                                        <span className="view-label">{translations.Company}</span>
                                         <span className="view-value">{viewModalInquiry.company || '-'}</span>
                                     </div>
                                     <div className="whitelabel-view-item">
-                                        <span className="view-label">{translations.Email || "Email"}</span>
+                                        <span className="view-label">{translations.Email}</span>
                                         <span className="view-value">
                                             <a href={`mailto:${viewModalInquiry.email}`}>{viewModalInquiry.email || '-'}</a>
                                         </span>
                                     </div>
                                     <div className="whitelabel-view-item">
-                                        <span className="view-label">{translations.Phone || "Phone / WhatsApp"}</span>
+                                        <span className="view-label">{translations.Phone}</span>
                                         <span className="view-value">{viewModalInquiry.phone || '-'}</span>
                                     </div>
                                     <div className="whitelabel-view-item">
-                                        <span className="view-label">{translations.LicenseModel || "License Plan"}</span>
+                                        <span className="view-label">{translations.LicenseModel}</span>
                                         <span className="view-value">{viewModalInquiry.licenseModel || '-'}</span>
                                     </div>
                                     <div className="whitelabel-view-item">
-                                        <span className="view-label">{translations.Timeline || "Deployment Timeline"}</span>
+                                        <span className="view-label">{translations.Timeline}</span>
                                         <span className="view-value">{viewModalInquiry.timeline || '-'}</span>
                                     </div>
                                     <div className="whitelabel-view-item">
-                                        <span className="view-label">{translations.Status || "Status"}</span>
+                                        <span className="view-label">{translations.Status}</span>
                                         <select
                                             value={viewModalInquiry.status || 'Pending'}
                                             onChange={(e) => handleStatusChange(viewModalInquiry._id, e.target.value)}
                                             className="status-select"
                                         >
-                                            <option value="Pending">Pending</option>
-                                            <option value="Contacted">Contacted</option>
-                                            <option value="In Progress">In Progress</option>
-                                            <option value="Closed">Closed</option>
+                                            <option value="Pending">{translations.pending}</option>
+                                            <option value="Contacted">{translations.Contacted}</option>
+                                            <option value="In Progress">{translations.InProgress}</option>
+                                            <option value="Closed">{translations.Closed}</option>
                                         </select>
                                     </div>
                                     <div className="whitelabel-view-item">
-                                        <span className="view-label">{translations.InquiryDate || "Submitted Date"}</span>
+                                        <span className="view-label">{translations.InquiryDate}</span>
                                         <span className="view-value">{viewModalInquiry.formattedDate || viewModalInquiry.createdAt || '-'}</span>
                                     </div>
                                     <div className="whitelabel-view-item full-row message-item">
-                                        <span className="view-label">{translations.Requirements || "Custom Requirements or Questions"}</span>
-                                        <span className="view-value">{viewModalInquiry.message || 'No additional requirements specified.'}</span>
+                                        <span className="view-label">{translations.Requirements}</span>
+                                        <span className="view-value">{viewModalInquiry.message || '-'}</span>
                                     </div>
                                 </div>
                                 <div className="modal-footer">
@@ -377,7 +377,7 @@ const GetWhiteLabel = ({ searchValue }) => {
                                             onClick={() => openWhatsAppDirect(viewModalInquiry.phone, viewModalInquiry.fullName)}
                                         >
                                             <WhatsAppIcon fontSize="small" />
-                                            <span>Chat with Lead on WhatsApp</span>
+                                            <span>{translations.ChatwithLeadonWhatsApp}</span>
                                         </button>
                                     )}
                                     <button
@@ -385,7 +385,7 @@ const GetWhiteLabel = ({ searchValue }) => {
                                         className="btn btn-secondary"
                                         onClick={() => setViewModalInquiry(null)}
                                     >
-                                        {translations.Close || "Close"}
+                                        {translations.Close}
                                     </button>
                                 </div>
                             </div>

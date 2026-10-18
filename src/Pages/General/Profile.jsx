@@ -86,11 +86,11 @@ const Profile = () => {
                             phone: fallbackData.phone || ''
                         }));
                     }
-                    setWarningMessage(translations.adminprofilenotavailable || "Admin profile data not available.");
+                    setWarningMessage(translations.adminprofilenotavailable);
                     setShowWarning(true);
                 }
             } catch {
-                setWarningMessage(translations.servererror || "Server error");
+                setWarningMessage(translations.servererror);
                 setShowWarning(true);
             }
         };
@@ -118,14 +118,14 @@ const Profile = () => {
                 setPhoneError("");
             } else {
                 if (value.length >= 10) {
-                    setPhoneError(translations.invalidphonenumber || "Invalid phone number");
+                    setPhoneError(translations.invalidphonenumber);
                 } else {
                     setPhoneError("");
                 }
             }
         } catch {
             if (value.length >= 10) {
-                setPhoneError(translations.invalidphonenumber || "Invalid phone number");
+                setPhoneError(translations.invalidphonenumber);
             } else {
                 setPhoneError("");
             }
@@ -135,7 +135,7 @@ const Profile = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (!profileData.firstname && !profileData.lastname && !profileData.email && !profileData.phone) {
-            setWarningMessage(translations.pleasefillatleastonefield || "Please fill at least one field to update.");
+            setWarningMessage(translations.pleasefillatleastonefield);
             setShowWarning(true);
             return;
         }
@@ -150,8 +150,8 @@ const Profile = () => {
         }
 
         if (profileData.phone && profileData.phone.trim() !== '' && !isPhoneValid) {
-            setPhoneError(translations.invalidphonenumber || "Invalid phone number");
-            setWarningMessage(translations.invalidphonenumber || "Invalid phone number");
+            setPhoneError(translations.invalidphonenumber);
+            setWarningMessage(translations.invalidphonenumber);
             setShowWarning(true);
             return;
         }
@@ -180,7 +180,7 @@ const Profile = () => {
             const data = await response.json();
 
             if (response.ok) {
-                setAlertMessage(data.message || translations.profileupdatedsuccessfully || "Profile updated successfully");
+                setAlertMessage(data.message || translations.profileupdatedsuccessfully);
                 window.dispatchEvent(new Event("adminProfileUpdated"));
             } else {
                 setWarningMessage(data.message || translations.servererror);

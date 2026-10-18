@@ -66,11 +66,11 @@ const GetContactUs = ({ searchValue }) => {
                         : (Array.isArray(data?.data) ? data.data : (data != null ? [data] : [])));
                 setContactList(list);
             } else {
-                setWarningMessage(translations.servererror || 'Failed to load contact inquiries');
+                setWarningMessage(translations.servererror);
                 setShowWarning(true);
             }
         } catch {
-            setWarningMessage(translations.servererror || 'Failed to load contact inquiries');
+            setWarningMessage(translations.servererror);
             setShowWarning(true);
         } finally {
             setLoading(false);
@@ -157,24 +157,24 @@ const GetContactUs = ({ searchValue }) => {
                         <thead>
                             <tr>
                                 <th onClick={() => handleSort('fullname')}>
-                                    {translations.FullName || "Full Name"} {renderSortIcon('fullname')}
+                                    {translations.FullName} {renderSortIcon('fullname')}
                                 </th>
                                 <th onClick={() => handleSort('email')}>
-                                    {translations.Email || "Email"} {renderSortIcon('email')}
+                                    {translations.Email} {renderSortIcon('email')}
                                 </th>
                                 <th onClick={() => handleSort('phone')}>
-                                    {translations.Phone || "Phone / WhatsApp"} {renderSortIcon('phone')}
+                                    {translations.Phone} {renderSortIcon('phone')}
                                 </th>
                                 <th onClick={() => handleSort('subject')}>
-                                    {translations.Subject || "Subject"} {renderSortIcon('subject')}
+                                    {translations.Subject} {renderSortIcon('subject')}
                                 </th>
                                 <th onClick={() => handleSort('message')}>
-                                    {translations.Message || "Message"} {renderSortIcon('message')}
+                                    {translations.Message} {renderSortIcon('message')}
                                 </th>
                                 <th onClick={() => handleSort('createdAt')}>
-                                    {translations.InquiryDate || translations.Date || "Date"} {renderSortIcon('createdAt')}
+                                    {translations.Date} {renderSortIcon('createdAt')}
                                 </th>
-                                <th>{translations.Action || "Actions"}</th>
+                                <th>{translations.Action}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -190,7 +190,7 @@ const GetContactUs = ({ searchValue }) => {
                                         <td>{contact.phone || '-'}</td>
                                         <td>
                                             <span className="badge-subject" title={contact.subject}>
-                                                {contact.subject || 'General Inquiry'}
+                                                {contact.subject || '-'}
                                             </span>
                                         </td>
                                         <td title={contact.message || ''}>
@@ -202,7 +202,7 @@ const GetContactUs = ({ searchValue }) => {
                                                 <IconButton
                                                     onClick={() => setViewModalContact(contact)}
                                                     size="small"
-                                                    title={translations.View || "View Details"}
+                                                    title={translations.viewdetails || translations.View}
                                                     className="view-icon"
                                                 >
                                                     <ViewIcon fontSize="small" />
@@ -212,7 +212,7 @@ const GetContactUs = ({ searchValue }) => {
                                                     <IconButton
                                                         onClick={() => openWhatsAppDirect(contact.phone, contact.fullname)}
                                                         size="small"
-                                                        title="Chat on WhatsApp"
+                                                        title={translations.ChatonWhatsApp}
                                                         className="wa-icon-btn"
                                                     >
                                                         <WhatsAppIcon fontSize="small" />
@@ -225,7 +225,7 @@ const GetContactUs = ({ searchValue }) => {
                             ) : (
                                 <tr>
                                     <td colSpan="7" style={{ textAlign: 'center', padding: '24px 0' }}>
-                                        {translations.nodatafound || "No inquiries found"}
+                                        {translations.nodatafound}
                                     </td>
                                 </tr>
                             )}
@@ -264,24 +264,24 @@ const GetContactUs = ({ searchValue }) => {
                             <div className="modal-content">
                                 <div className="modal-header">
                                     <h5 className="modal-title">
-                                        {translations.InquiryDetails || translations.ContactDetails || "Contact Inquiry Details"}
+                                        {translations.ContactDetails}
                                     </h5>
                                     <button
                                         type="button"
                                         className="btn-close"
                                         onClick={() => setViewModalContact(null)}
-                                        aria-label={translations.Close || "Close"}
+                                        aria-label={translations.Close}
                                     />
                                 </div>
                                 <div className="modal-body contactus-view-modal-body">
                                     <div className="contactus-view-item">
-                                        <span className="view-label">{translations.FullName || "Full Name"}</span>
+                                        <span className="view-label">{translations.FullName}</span>
                                         <span className="view-value">
                                             <strong>{viewModalContact.fullname || '-'}</strong>
                                         </span>
                                     </div>
                                     <div className="contactus-view-item">
-                                        <span className="view-label">{translations.Email || "Email"}</span>
+                                        <span className="view-label">{translations.Email}</span>
                                         <span className="view-value">
                                             <a href={`mailto:${viewModalContact.email}`}>
                                                 {viewModalContact.email || '-'}
@@ -289,21 +289,21 @@ const GetContactUs = ({ searchValue }) => {
                                         </span>
                                     </div>
                                     <div className="contactus-view-item">
-                                        <span className="view-label">{translations.Phone || "Phone / WhatsApp"}</span>
+                                        <span className="view-label">{translations.Phone}</span>
                                         <span className="view-value">{viewModalContact.phone || '-'}</span>
                                     </div>
                                     <div className="contactus-view-item">
-                                        <span className="view-label">{translations.Subject || "Subject"}</span>
+                                        <span className="view-label">{translations.Subject}</span>
                                         <span className="view-value">{viewModalContact.subject || '-'}</span>
                                     </div>
                                     <div className="contactus-view-item full-row">
-                                        <span className="view-label">{translations.InquiryDate || translations.Date || "Submitted Date"}</span>
+                                        <span className="view-label">{translations.Date}</span>
                                         <span className="view-value">
                                             {viewModalContact.formattedDate || viewModalContact.createdAt || '-'}
                                         </span>
                                     </div>
                                     <div className="contactus-view-item full-row message-item">
-                                        <span className="view-label">{translations.Message || "Message"}</span>
+                                        <span className="view-label">{translations.Message}</span>
                                         <span className="view-value">
                                             {viewModalContact.message || '-'}
                                         </span>
@@ -317,7 +317,7 @@ const GetContactUs = ({ searchValue }) => {
                                             onClick={() => openWhatsAppDirect(viewModalContact.phone, viewModalContact.fullname)}
                                         >
                                             <WhatsAppIcon fontSize="small" />
-                                            <span>Chat with Lead on WhatsApp</span>
+                                            <span>{translations.ChatwithLeadonWhatsApp}</span>
                                         </button>
                                     )}
                                     <button
@@ -325,7 +325,7 @@ const GetContactUs = ({ searchValue }) => {
                                         className="btn btn-secondary"
                                         onClick={() => setViewModalContact(null)}
                                     >
-                                        {translations.Close || "Close"}
+                                        {translations.Close}
                                     </button>
                                 </div>
                             </div>

@@ -195,7 +195,7 @@ const Dashboard = () => {
 
     const cardData = [
         {
-            name: translations.WhiteLabelInquiries || "White-Label Inquiries",
+            name: translations.WhiteLabelInquiries,
             count: dashboardData.whiteLabelCount ?? 0,
             difference: kpiDifferences.whiteLabelDifference || "+100%",
             icon: <WorkspacePremium className="card-icon" />,
@@ -204,7 +204,7 @@ const Dashboard = () => {
             variant: "highlight",
         },
         {
-            name: translations.ContactUs || "Contact Us",
+            name: translations.ContactUs,
             count: dashboardData.contactUsCount ?? 0,
             difference: kpiDifferences.contactUsDifference || "+100%",
             icon: <ContactMail className="card-icon" />,
@@ -213,7 +213,7 @@ const Dashboard = () => {
             variant: "revenue",
         },
         {
-            name: translations.Subscribers || "Subscribers",
+            name: translations.Subscribers,
             count: dashboardData.totalSubscriptionCount ?? 0,
             difference: kpiDifferences.subscribersDifference || "+12%",
             icon: <MarkEmailRead className="card-icon" />,
@@ -222,7 +222,7 @@ const Dashboard = () => {
             variant: "income",
         },
         {
-            name: translations.Employee || "Employees",
+            name: translations.Employees || translations.Employee,
             count: dashboardData.totalEmployeesCount ?? 0,
             difference: kpiDifferences.employeesDifference || "0%",
             icon: <Groups className="card-icon" />,
@@ -233,18 +233,18 @@ const Dashboard = () => {
     ];
 
     const monthNames = [
-        translations.Jan || "Jan",
-        translations.Feb || "Feb",
-        translations.Mar || "Mar",
-        translations.Apr || "Apr",
-        translations.May || "May",
-        translations.Jun || "Jun",
-        translations.Jul || "Jul",
-        translations.Aug || "Aug",
-        translations.Sep || "Sep",
-        translations.Oct || "Oct",
-        translations.Nov || "Nov",
-        translations.Dec || "Dec"
+        translations.Jan,
+        translations.Feb,
+        translations.Mar,
+        translations.Apr,
+        translations.May,
+        translations.Jun,
+        translations.Jul,
+        translations.Aug,
+        translations.Sep,
+        translations.Oct,
+        translations.Nov,
+        translations.Dec
     ];
 
     const initialChartData = monthNames.map((month) => ({
@@ -311,7 +311,7 @@ const Dashboard = () => {
             <div className="dashboard-row row-1">
                 <div className="chart-container monthly-revenue-chart">
                     <Typography variant="h6" className="chart-title">
-                        {translations.MonthlyInquiries || "Monthly Inquiries & Leads"}
+                        {translations.MonthlyInquiries}
                     </Typography>
                     <ResponsiveContainer width="100%" height={350}>
                         <AreaChart data={chartData} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
@@ -335,7 +335,7 @@ const Dashboard = () => {
                                 stroke="var(--primary-color)"
                                 fill="url(#whiteLabelGradient)"
                                 strokeWidth={3}
-                                name={translations.WhiteLabelInquiries || "White-Label Inquiries"}
+                                name={translations.WhiteLabelInquiries}
                             />
                             <Area
                                 type="monotone"
@@ -343,7 +343,7 @@ const Dashboard = () => {
                                 stroke="#0284c7"
                                 fill="url(#contactUsGradient)"
                                 strokeWidth={2.5}
-                                name={translations.ContactUs || "Contact Us"}
+                                name={translations.ContactUs}
                             />
                         </AreaChart>
                     </ResponsiveContainer>
@@ -352,10 +352,10 @@ const Dashboard = () => {
                 <div className="recently-added-container">
                     <div className="section-header-wrap">
                         <Typography variant="h6" className="section-title">
-                            {translations.RecentInquiries || "Recent White-Label Inquiries"}
+                            {translations.RecentInquiries}
                         </Typography>
                         <button className="view-all-btn" onClick={() => navigate('/Support/WhiteLabel')}>
-                            {translations.viewall || "View All"} <ArrowForward />
+                            {translations.viewall} <ArrowForward />
                         </button>
                     </div>
                     {recentInquiries.length > 0 ? (
@@ -401,7 +401,7 @@ const Dashboard = () => {
                     ) : (
                         <div className="no-data-message">
                             <Typography variant="body2">
-                                {translations.NoRecentInquiries || "No recent inquiries found"}
+                                {translations.NoRecentInquiries}
                             </Typography>
                         </div>
                     )}
@@ -412,10 +412,10 @@ const Dashboard = () => {
                 <div className="recently-added-container">
                     <div className="section-header-wrap">
                         <Typography variant="h6" className="section-title">
-                            {translations.RecentEmployees || translations.Employee || "Employees"}
+                            {translations.RecentEmployees}
                         </Typography>
                         <button className="view-all-btn" onClick={() => navigate('/User/Employee')}>
-                            {translations.viewall || "View All"} <ArrowForward />
+                            {translations.viewall} <ArrowForward />
                         </button>
                     </div>
                     {recentEmployees.length > 0 ? (
@@ -447,7 +447,7 @@ const Dashboard = () => {
                                             {emp.formattedDate || formatDisplayDate(emp.createdAt)}
                                         </div>
                                         <span className={`client-status-badge ${emp.status ? 'active' : 'inactive'}`}>
-                                            {emp.status ? (translations.active || "Active") : (translations.inactive || "Inactive")}
+                                            {emp.status ? translations.active : translations.inactive}
                                         </span>
                                     </div>
                                 </div>
@@ -456,7 +456,7 @@ const Dashboard = () => {
                     ) : (
                         <div className="no-data-message">
                             <Typography variant="body2">
-                                {translations.NoRecentEmployees || "No employees found"}
+                                {translations.NoRecentEmployees}
                             </Typography>
                         </div>
                     )}
@@ -464,7 +464,7 @@ const Dashboard = () => {
 
                 <div className="chart-container">
                     <Typography variant="h6" className="chart-title">
-                        {translations.MonthlySubscribers || "Monthly Subscribers"}
+                        {translations.MonthlySubscribers}
                     </Typography>
                     <ResponsiveContainer width="100%" height={350}>
                         <BarChart data={chartData} barSize={24} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
@@ -472,7 +472,7 @@ const Dashboard = () => {
                             <YAxis className="chart-axis" axisLine={false} tickLine={false} width={45} allowDecimals={false} tickFormatter={(value) => Math.round(value)} />
                             <Tooltip content={<SubscriberTooltip />} />
                             <Legend className="chart-legend" />
-                            <Bar dataKey="subscriberCount" fill="var(--primary-color)" name={translations.Subscribers || "Subscribers"} radius={[8, 8, 0, 0]} isAnimationActive={false} />
+                            <Bar dataKey="subscriberCount" fill="var(--primary-color)" name={translations.Subscribers} radius={[8, 8, 0, 0]} isAnimationActive={false} />
                         </BarChart>
                     </ResponsiveContainer>
                 </div>

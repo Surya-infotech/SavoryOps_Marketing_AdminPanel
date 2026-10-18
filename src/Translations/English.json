@@ -220,5 +220,15 @@
     "NoRecentInquiries": "No recent inquiries found",
     "RecentEmployees": "Recent Employees",
     "NoRecentEmployees": "No employees found",
-    "MonthlySubscribers": "Monthly Subscribers"
+    "MonthlySubscribers": "Monthly Subscribers",
+    "Action": "Action",
+    "Company": "Company",
+    "Status": "Status",
+    "Support": "Content & Support",
+    "Employees": "Employees",
+    "Contacted": "Contacted",
+    "InProgress": "In Progress",
+    "Closed": "Closed",
+    "ChatwithLeadonWhatsApp": "Chat with Lead on WhatsApp",
+    "ChatonWhatsApp": "Chat on WhatsApp"
 }

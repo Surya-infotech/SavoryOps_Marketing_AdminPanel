@@ -46,24 +46,24 @@ const PermissionTab = ({ employeeData }) => {
     const permissionPages = useMemo(() => [
         {
             id: 'whiteLabel',
-            name: translations.WhiteLabelInquiries || 'White-Label Inquiries',
-            category: translations.Support || 'Content & Support',
+            name: translations.WhiteLabelInquiries,
+            category: translations.Support,
             categoryKey: 'support',
             icon: WorkspacePremiumIcon,
             hiddenActions: ['add', 'edit']
         },
         {
             id: 'contactUs',
-            name: translations.ContactUs || 'Contact Us',
-            category: translations.Support || 'Content & Support',
+            name: translations.ContactUs,
+            category: translations.Support,
             categoryKey: 'support',
             icon: ContactMailIcon,
             hiddenActions: ['add']
         },
         {
             id: 'subscribers',
-            name: translations.Subscribers || 'Subscribers',
-            category: translations.Support || 'Content & Support',
+            name: translations.Subscribers,
+            category: translations.Support,
             categoryKey: 'support',
             icon: MarkEmailReadIcon,
             hiddenActions: ['add', 'edit']
@@ -71,8 +71,8 @@ const PermissionTab = ({ employeeData }) => {
     ], [translations]);
 
     const categories = useMemo(() => [
-        { id: 'all', label: translations.allpages || 'All Pages' },
-        { id: 'support', label: translations.Support || 'Content & Support' }
+        { id: 'all', label: translations.allpages },
+        { id: 'support', label: translations.Support }
     ], [translations]);
 
     // Build default permissions matrix (all applicable set to true)

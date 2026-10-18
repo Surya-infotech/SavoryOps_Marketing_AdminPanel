@@ -249,7 +249,7 @@ const EmployeeDashboard = () => {
                         <div className="info-panel-card">
                             <div className="panel-header">
                                 <PersonOutlined className="panel-header-icon" />
-                                <h5 className="panel-title">{translations.employeeoverview || 'Employee Overview'}</h5>
+                                <h5 className="panel-title">{translations.employeeoverview}</h5>
                             </div>
                             <div className="panel-body">
                                 <div className="info-list">
