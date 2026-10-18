@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import moment from 'moment-timezone';
 import {
     CalendarMonth,
     WorkOutlined,
@@ -81,7 +82,22 @@ const EmployeeDashboard = () => {
 
     const formatDate = (dateString) => {
         if (!dateString) return '-';
+        const misc = employeeData?.miscSettings;
+        const timeZone = misc?.timeZone;
+        const dateFormat = misc?.dateFormat;
+        const timeFormat = misc?.timeFormat;
         try {
+            if (timeZone && dateFormat) {
+                const m = moment.tz(dateString, timeZone);
+                if (m.isValid()) {
+                    return timeFormat ? m.format(`${dateFormat} ${timeFormat}`) : m.format(dateFormat);
+                }
+            } else if (dateFormat) {
+                const m = moment(dateString);
+                if (m.isValid()) {
+                    return timeFormat ? m.format(`${dateFormat} ${timeFormat}`) : m.format(dateFormat);
+                }
+            }
             const date = new Date(dateString);
             if (isNaN(date.getTime())) return dateString;
             return date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });

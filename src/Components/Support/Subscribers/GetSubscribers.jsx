@@ -10,23 +10,6 @@ import Pagination from '../../../Pages/Custom/Pagination';
 import WarningModal from '../../../Pages/Custom/WarningModal';
 import '../../../Scss/Support/Subscribers/getsubscribers.scss';
 
-const formatDate = (dateString) => {
-    if (!dateString) return '-';
-    try {
-        const d = new Date(dateString);
-        if (isNaN(d.getTime())) return dateString;
-        return d.toLocaleString(undefined, {
-            year: 'numeric',
-            month: 'short',
-            day: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit'
-        });
-    } catch {
-        return dateString;
-    }
-};
-
 const GetSubscribers = ({ searchValue }) => {
     const navigate = useNavigate();
     const { logoutUser } = useAuth();
@@ -59,7 +42,11 @@ const GetSubscribers = ({ searchValue }) => {
             if (HandleUnauthorized(data, logoutUser, navigate)) return;
 
             if (response.ok) {
-                const list = Array.isArray(data) ? data : (data != null ? [data] : []);
+                const list = Array.isArray(data)
+                    ? data
+                    : (Array.isArray(data?.subscribers)
+                        ? data.subscribers
+                        : (Array.isArray(data?.data) ? data.data : (data != null ? [data] : [])));
                 setSubscriberList(list);
             } else {
                 setWarningMessage(translations.servererror);
@@ -98,7 +85,8 @@ const GetSubscribers = ({ searchValue }) => {
         if (lowerSearch) {
             filtered = subscriberList.filter((item) =>
                 (item.email || '').toLowerCase().includes(lowerSearch) ||
-                (item.source || '').toLowerCase().includes(lowerSearch)
+                (item.source || '').toLowerCase().includes(lowerSearch) ||
+                (item.formattedDate || item.createdAt || '').toLowerCase().includes(lowerSearch)
             );
         }
 
@@ -153,7 +141,7 @@ const GetSubscribers = ({ searchValue }) => {
                                             {subscriber.source || 'Website'}
                                         </td>
                                         <td>
-                                            {formatDate(subscriber.createdAt)}
+                                            {subscriber.formattedDate || subscriber.createdAt || '-'}
                                         </td>
                                     </tr>
                                 ))

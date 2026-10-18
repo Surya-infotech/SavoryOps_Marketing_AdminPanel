@@ -26,23 +26,6 @@ const truncateMessage = (text) => {
     return str.slice(0, MESSAGE_TRUNCATE_LENGTH) + '...';
 };
 
-const formatDate = (dateString) => {
-    if (!dateString) return '-';
-    try {
-        const d = new Date(dateString);
-        if (isNaN(d.getTime())) return dateString;
-        return d.toLocaleString(undefined, {
-            year: 'numeric',
-            month: 'short',
-            day: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit'
-        });
-    } catch {
-        return dateString;
-    }
-};
-
 const GetContactUs = ({ searchValue }) => {
     const navigate = useNavigate();
     const { logoutUser } = useAuth();
@@ -76,7 +59,11 @@ const GetContactUs = ({ searchValue }) => {
             if (HandleUnauthorized(data, logoutUser, navigate)) return;
 
             if (response.ok) {
-                const list = Array.isArray(data) ? data : (data != null ? [data] : []);
+                const list = Array.isArray(data)
+                    ? data
+                    : (Array.isArray(data?.contacts)
+                        ? data.contacts
+                        : (Array.isArray(data?.data) ? data.data : (data != null ? [data] : [])));
                 setContactList(list);
             } else {
                 setWarningMessage(translations.servererror || 'Failed to load contact inquiries');
@@ -118,7 +105,8 @@ const GetContactUs = ({ searchValue }) => {
                 (item.email && item.email.toLowerCase().includes(query)) ||
                 (item.phone && item.phone.toLowerCase().includes(query)) ||
                 (item.subject && item.subject.toLowerCase().includes(query)) ||
-                (item.message && item.message.toLowerCase().includes(query))
+                (item.message && item.message.toLowerCase().includes(query)) ||
+                ((item.formattedDate || item.createdAt || '').toLowerCase().includes(query))
             );
         });
 
@@ -208,7 +196,7 @@ const GetContactUs = ({ searchValue }) => {
                                         <td title={contact.message || ''}>
                                             {truncateMessage(contact.message)}
                                         </td>
-                                        <td>{formatDate(contact.createdAt)}</td>
+                                        <td>{contact.formattedDate || contact.createdAt || '-'}</td>
                                         <td>
                                             <div className="contactus-actions">
                                                 <IconButton
@@ -311,7 +299,7 @@ const GetContactUs = ({ searchValue }) => {
                                     <div className="contactus-view-item full-row">
                                         <span className="view-label">{translations.InquiryDate || translations.Date || "Submitted Date"}</span>
                                         <span className="view-value">
-                                            {formatDate(viewModalContact.createdAt)}
+                                            {viewModalContact.formattedDate || viewModalContact.createdAt || '-'}
                                         </span>
                                     </div>
                                     <div className="contactus-view-item full-row message-item">

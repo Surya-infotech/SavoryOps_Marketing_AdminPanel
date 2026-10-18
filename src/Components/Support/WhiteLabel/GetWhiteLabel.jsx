@@ -16,23 +16,6 @@ import WarningModal from '../../../Pages/Custom/WarningModal';
 import AlertMessage from '../../../Pages/Custom/AlertMessage';
 import '../../../Scss/Support/WhiteLabel/getwhitelabel.scss';
 
-const formatDate = (dateString) => {
-    if (!dateString) return '-';
-    try {
-        const d = new Date(dateString);
-        if (isNaN(d.getTime())) return dateString;
-        return d.toLocaleString(undefined, {
-            year: 'numeric',
-            month: 'short',
-            day: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit'
-        });
-    } catch {
-        return dateString;
-    }
-};
-
 const GetWhiteLabel = ({ searchValue }) => {
     const navigate = useNavigate();
     const { logoutUser } = useAuth();
@@ -67,7 +50,11 @@ const GetWhiteLabel = ({ searchValue }) => {
             if (HandleUnauthorized(data, logoutUser, navigate)) return;
 
             if (response.ok) {
-                const list = Array.isArray(data) ? data : (data != null ? [data] : []);
+                const list = Array.isArray(data)
+                    ? data
+                    : (Array.isArray(data?.inquiries)
+                        ? data.inquiries
+                        : (Array.isArray(data?.data) ? data.data : (data != null ? [data] : [])));
                 setInquiryList(list);
             } else {
                 setWarningMessage(translations.servererror || "Failed to load inquiries");
@@ -142,7 +129,8 @@ const GetWhiteLabel = ({ searchValue }) => {
                 (item.phone && item.phone.toLowerCase().includes(q)) ||
                 (item.licenseModel && item.licenseModel.toLowerCase().includes(q)) ||
                 (item.timeline && item.timeline.toLowerCase().includes(q)) ||
-                (item.status && item.status.toLowerCase().includes(q))
+                (item.status && item.status.toLowerCase().includes(q)) ||
+                ((item.formattedDate || item.createdAt || '').toLowerCase().includes(q))
             );
         });
 
@@ -261,7 +249,7 @@ const GetWhiteLabel = ({ searchValue }) => {
                                                 <option value="Closed">Closed</option>
                                             </select>
                                         </td>
-                                        <td>{formatDate(inquiry.createdAt)}</td>
+                                        <td>{inquiry.formattedDate || inquiry.createdAt || '-'}</td>
                                         <td>
                                             <div className="whitelabel-actions">
                                                 <IconButton
@@ -374,7 +362,7 @@ const GetWhiteLabel = ({ searchValue }) => {
                                     </div>
                                     <div className="whitelabel-view-item">
                                         <span className="view-label">{translations.InquiryDate || "Submitted Date"}</span>
-                                        <span className="view-value">{formatDate(viewModalInquiry.createdAt)}</span>
+                                        <span className="view-value">{viewModalInquiry.formattedDate || viewModalInquiry.createdAt || '-'}</span>
                                     </div>
                                     <div className="whitelabel-view-item full-row message-item">
                                         <span className="view-label">{translations.Requirements || "Custom Requirements or Questions"}</span>
