@@ -1,5 +1,4 @@
-import { ArrowDownward, ArrowUpward, UnfoldMore, Delete as DeleteIcon } from '@mui/icons-material';
-import { IconButton } from '@mui/material';
+import { ArrowDownward, ArrowUpward, UnfoldMore } from '@mui/icons-material';
 import { useEffect, useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../../Middleware/Auth';
@@ -9,7 +8,6 @@ import HandleUnauthorized from '../../../utils/HandleUnauthorized';
 import LoadingSpinner from '../../../Pages/Custom/LoadingSpinner';
 import Pagination from '../../../Pages/Custom/Pagination';
 import WarningModal from '../../../Pages/Custom/WarningModal';
-import AlertMessage from '../../../Pages/Custom/AlertMessage';
 import '../../../Scss/Support/Subscribers/getsubscribers.scss';
 
 const formatDate = (dateString) => {
@@ -40,13 +38,11 @@ const GetSubscribers = ({ searchValue }) => {
     const [loading, setLoading] = useState(true);
     const [warningMessage, setWarningMessage] = useState('');
     const [showWarning, setShowWarning] = useState(false);
-    const [successMessage, setSuccessMessage] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const [pageSize, setPageSize] = useState(10);
     const [sortColumn, setSortColumn] = useState('createdAt');
     const [sortDirection, setSortDirection] = useState('desc');
     const [subscriberList, setSubscriberList] = useState([]);
-    const [deleteTargetId, setDeleteTargetId] = useState(null);
 
     const fetchSubscribers = async () => {
         if (!CheckToken(token, logoutUser, navigate)) return;
@@ -90,31 +86,6 @@ const GetSubscribers = ({ searchValue }) => {
         return (item[column] ?? '').toString().toLowerCase();
     };
 
-    const confirmDelete = async () => {
-        if (!deleteTargetId) return;
-        try {
-            const response = await fetch(`${adminPanelBackendPath}/Support/DeleteSubscriber/${deleteTargetId}`, {
-                method: 'DELETE',
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    'Content-Type': 'application/json',
-                },
-            });
-            if (response.ok) {
-                setSubscriberList((prev) => prev.filter((item) => item._id !== deleteTargetId));
-                setSuccessMessage(translations.subscriberdeletedsuccessfully || "Subscriber deleted successfully.");
-            } else {
-                setWarningMessage("Failed to delete subscriber");
-                setShowWarning(true);
-            }
-        } catch {
-            setWarningMessage("Error deleting subscriber");
-            setShowWarning(true);
-        } finally {
-            setDeleteTargetId(null);
-        }
-    };
-
     const handleSort = (column) => {
         const direction = sortColumn === column && sortDirection === 'asc' ? 'desc' : 'asc';
         setSortColumn(column);
@@ -148,19 +119,10 @@ const GetSubscribers = ({ searchValue }) => {
     );
 
     const handleWarningClose = () => setShowWarning(false);
-    const handleCloseAlert = () => setSuccessMessage('');
 
     return (
         <>
             {showWarning && <WarningModal message={warningMessage} onClose={handleWarningClose} />}
-            {deleteTargetId && (
-                <WarningModal
-                    message={translations.deletesubscriberwarning || "Are you sure you want to delete this subscriber?"}
-                    onConfirm={confirmDelete}
-                    onClose={() => setDeleteTargetId(null)}
-                />
-            )}
-            {successMessage && <AlertMessage message={successMessage} onClose={handleCloseAlert} />}
 
             {loading ? (
                 <LoadingSpinner />
@@ -178,9 +140,6 @@ const GetSubscribers = ({ searchValue }) => {
                                 <th onClick={() => handleSort('createdAt')} style={{ cursor: 'pointer' }}>
                                     {translations.SubscriptionDate} {renderSortIcon('createdAt')}
                                 </th>
-                                <th style={{ textAlign: 'center' }}>
-                                    {translations.Action || "Actions"}
-                                </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -196,21 +155,11 @@ const GetSubscribers = ({ searchValue }) => {
                                         <td>
                                             {formatDate(subscriber.createdAt)}
                                         </td>
-                                        <td style={{ textAlign: 'center' }}>
-                                            <IconButton
-                                                onClick={() => setDeleteTargetId(subscriber._id)}
-                                                size="small"
-                                                title={translations.Delete || "Delete"}
-                                                style={{ color: '#dc2626' }}
-                                            >
-                                                <DeleteIcon fontSize="small" />
-                                            </IconButton>
-                                        </td>
                                     </tr>
                                 ))
                             ) : (
                                 <tr>
-                                    <td colSpan="4" style={{ textAlign: 'center', padding: '2rem' }}>
+                                    <td colSpan="3" style={{ textAlign: 'center', padding: '2rem' }}>
                                         {translations.nodatafound}
                                     </td>
                                 </tr>

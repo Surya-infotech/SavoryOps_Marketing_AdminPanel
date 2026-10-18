@@ -240,7 +240,5 @@
     "InquiryDate": "Inquiry Date",
     "InquiryDetails": "White-Label Inquiry Details",
     "Requirements": "Requirements",
-    "statusupdatedsuccessfully": "Status updated successfully.",
-    "deletesubscriberwarning": "Are you sure you want to delete this subscriber?",
-    "subscriberdeletedsuccessfully": "Subscriber deleted successfully."
+    "statusupdatedsuccessfully": "Status updated successfully."
 }
