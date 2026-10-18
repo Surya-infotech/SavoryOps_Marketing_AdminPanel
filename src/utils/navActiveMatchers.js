@@ -5,6 +5,7 @@
 const NAV_ACTIVE_PREFIXES = {
     '/Home/Dashboard': ['/Home/Dashboard', '/Home/EmployeeDashboard'],
     '/Home/EmployeeDashboard': ['/Home/EmployeeDashboard', '/Home/Dashboard'],
+    '/Support/WhiteLabel': ['/Support/WhiteLabel'],
     '/Support/ContactUs': ['/Support/ContactUs'],
     '/Support/Subscribers': ['/Support/Subscribers'],
     '/System/Setting': ['/System/Setting', '/System/Setting/AddFiscalYear', '/System/Setting/EditFiscalYear'],

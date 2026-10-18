@@ -232,5 +232,15 @@
     "valuedclient": "Valued Client",
     "order": "Display Order",
     "search": "Search",
-    "selected": "Selected"
+    "selected": "Selected",
+    "WhiteLabel": "White-Label",
+    "WhiteLabelInquiries": "White-Label Inquiries",
+    "LicenseModel": "License Plan",
+    "Timeline": "Timeline",
+    "InquiryDate": "Inquiry Date",
+    "InquiryDetails": "White-Label Inquiry Details",
+    "Requirements": "Requirements",
+    "deleteinquirywarning": "Are you sure you want to delete this white-label inquiry?",
+    "inquirydeletedsuccessfully": "Inquiry deleted successfully.",
+    "statusupdatedsuccessfully": "Status updated successfully."
 }

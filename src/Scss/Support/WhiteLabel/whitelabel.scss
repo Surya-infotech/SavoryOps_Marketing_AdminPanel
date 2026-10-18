@@ -1,0 +1,29 @@
+@use "../../Customize/Mixin/page_mixin.scss" as mixin;
+
+.WhiteLabel-container {
+    @include mixin.main_page;
+
+    .whitelabel-container {
+        @include mixin.page;
+
+        .whitelabel-headingname {
+            @include mixin.heading_name_text;
+
+            &::before {
+                @include mixin.heading_name;
+            }
+        }
+
+        .whitelabel-form-container {
+            @include mixin.page_size;
+
+            .whitelabel-header {
+                @include mixin.page_header;
+            }
+        }
+    }
+}
+
+.alert {
+    @include mixin.alert;
+}

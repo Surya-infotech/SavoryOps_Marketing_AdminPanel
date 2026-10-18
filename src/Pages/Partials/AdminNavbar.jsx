@@ -10,6 +10,7 @@ import { useLanguage } from "../../Context/LanguageContext";
 import { usePermissions } from '../../Hooks/usePermissions';
 import { isAdminNavLinkActive } from '../../utils/navActiveMatchers';
 import ContactMailIcon from '@mui/icons-material/ContactMail';
+import WorkspacePremiumIcon from '@mui/icons-material/WorkspacePremium';
 import MarkEmailReadIcon from '@mui/icons-material/MarkEmailRead';
 import SupportAgentIcon from '@mui/icons-material/SupportAgent';
 import HomeIcon from '@mui/icons-material/Home';
@@ -193,6 +194,14 @@ const AdminNavbar = () => {
                         </NavTooltip>
                         <div className={`submenu ${(expandedCategories.support && !isCollapsed) ? 'expanded' : ''}`}>
                             <div className="submenu-content">
+                                <li>
+                                    <NavLink to="/Support/WhiteLabel" className={navLinkClass('/Support/WhiteLabel')}>
+                                        <NavTooltip title={translations.WhiteLabelInquiries || "White-Label Inquiries"}>
+                                            <WorkspacePremiumIcon style={{ color: 'var(--primary-color)', marginRight: isRtl ? 0 : '10px', marginLeft: isRtl ? '10px' : 0 }} />
+                                        </NavTooltip>
+                                        {translations.WhiteLabelInquiries || "White-Label Inquiries"}
+                                    </NavLink>
+                                </li>
                                 <li>
                                     <NavLink to="/Support/ContactUs" className={navLinkClass('/Support/ContactUs')}>
                                         <NavTooltip title={translations.ContactUs}>

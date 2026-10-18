@@ -8,6 +8,7 @@ import DoneAllIcon from '@mui/icons-material/DoneAll';
 import RemoveDoneIcon from '@mui/icons-material/RemoveDone';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import ContactMailIcon from '@mui/icons-material/ContactMail';
+import WorkspacePremiumIcon from '@mui/icons-material/WorkspacePremium';
 import MarkEmailReadIcon from '@mui/icons-material/MarkEmailRead';
 import { Checkbox, CircularProgress } from '@mui/material';
 import { useLanguage } from '../../../Context/LanguageContext';
@@ -43,6 +44,14 @@ const PermissionTab = ({ employeeData }) => {
     const [showWarning, setShowWarning] = useState(false);
 
     const permissionPages = useMemo(() => [
+        {
+            id: 'whiteLabel',
+            name: translations.WhiteLabelInquiries || 'White-Label Inquiries',
+            category: translations.Support || 'Content & Support',
+            categoryKey: 'support',
+            icon: WorkspacePremiumIcon,
+            hiddenActions: ['add', 'edit']
+        },
         {
             id: 'contactUs',
             name: translations.ContactUs || 'Contact Us',

@@ -1,4 +1,11 @@
-import { ArrowForward, Groups, MarkEmailRead, Payments, ShoppingBag, TrendingDown, TrendingUp } from "@mui/icons-material";
+import ArrowForward from "@mui/icons-material/ArrowForward";
+import Groups from "@mui/icons-material/Groups";
+import MarkEmailRead from "@mui/icons-material/MarkEmailRead";
+import Payments from "@mui/icons-material/Payments";
+import ShoppingBag from "@mui/icons-material/ShoppingBag";
+import TrendingDown from "@mui/icons-material/TrendingDown";
+import TrendingUp from "@mui/icons-material/TrendingUp";
+import WorkspacePremium from "@mui/icons-material/WorkspacePremium";
 import { Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -226,11 +233,12 @@ const Dashboard = () => {
 
     const cardData = [
         {
-            name: translations.totalorders,
-            count: dashboardData.totalOrdersCount ?? 0,
-            difference: kpiDifferences.ordersDifference,
-            icon: <ShoppingBag className="card-icon" />,
-            isClickable: false,
+            name: translations.WhiteLabelInquiries || "White-Label Inquiries",
+            count: dashboardData.whiteLabelCount ?? 0,
+            difference: "+100%",
+            icon: <WorkspacePremium className="card-icon" />,
+            onClick: () => navigate('/Support/WhiteLabel'),
+            isClickable: true,
             variant: "highlight",
         },
         {
