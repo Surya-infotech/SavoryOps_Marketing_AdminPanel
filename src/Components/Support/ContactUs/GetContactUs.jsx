@@ -3,7 +3,6 @@ import {
     ArrowUpward,
     UnfoldMore,
     Visibility as ViewIcon,
-    Delete as DeleteIcon,
     WhatsApp as WhatsAppIcon
 } from '@mui/icons-material';
 import { IconButton } from '@mui/material';
@@ -16,8 +15,6 @@ import HandleUnauthorized from '../../../utils/HandleUnauthorized';
 import LoadingSpinner from '../../../Pages/Custom/LoadingSpinner';
 import Pagination from '../../../Pages/Custom/Pagination';
 import WarningModal from '../../../Pages/Custom/WarningModal';
-import AlertMessage from '../../../Pages/Custom/AlertMessage';
-import DeleteModal from '../../../Pages/Custom/DeleteModal';
 import '../../../Scss/Support/ContactUs/getcontactus.scss';
 
 const MESSAGE_TRUNCATE_LENGTH = 45;
@@ -57,18 +54,12 @@ const GetContactUs = ({ searchValue }) => {
     const [loading, setLoading] = useState(true);
     const [warningMessage, setWarningMessage] = useState('');
     const [showWarning, setShowWarning] = useState(false);
-    const [successMessage, setSuccessMessage] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const [pageSize, setPageSize] = useState(10);
     const [sortColumn, setSortColumn] = useState('createdAt');
     const [sortDirection, setSortDirection] = useState('desc');
     const [contactList, setContactList] = useState([]);
     const [viewModalContact, setViewModalContact] = useState(null);
-
-    // Delete state
-    const [deleteModalOpen, setDeleteModalOpen] = useState(false);
-    const [contactToDelete, setContactToDelete] = useState(null);
-    const [isDeleting, setIsDeleting] = useState(false);
 
     const fetchContactUs = async () => {
         if (!CheckToken(token, logoutUser, navigate)) return;
@@ -164,67 +155,10 @@ const GetContactUs = ({ searchValue }) => {
         window.open(`https://wa.me/${cleanNumber}?text=${text}`, '_blank');
     };
 
-    const handleDeleteClick = (contact) => {
-        setContactToDelete(contact);
-        setDeleteModalOpen(true);
-    };
-
-    const handleDeleteConfirm = async () => {
-        if (!contactToDelete || !contactToDelete._id) return;
-        setIsDeleting(true);
-
-        try {
-            const response = await fetch(`${adminPanelBackendPath}/Support/DeleteContactUs/${contactToDelete._id}`, {
-                method: 'DELETE',
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    'Content-Type': 'application/json'
-                }
-            });
-
-            const data = await response.json();
-
-            if (response.ok && data.success !== false) {
-                setContactList((prev) => prev.filter((item) => item._id !== contactToDelete._id));
-                setSuccessMessage(data.message || 'Contact message deleted successfully.');
-                setDeleteModalOpen(false);
-                setContactToDelete(null);
-            } else {
-                setWarningMessage(data.message || 'Failed to delete message');
-                setShowWarning(true);
-            }
-        } catch {
-            setWarningMessage('Error deleting contact message');
-            setShowWarning(true);
-        } finally {
-            setIsDeleting(false);
-        }
-    };
-
     return (
         <>
             {showWarning && (
                 <WarningModal message={warningMessage} onClose={() => setShowWarning(false)} />
-            )}
-            {successMessage && (
-                <AlertMessage message={successMessage} onClose={() => setSuccessMessage('')} />
-            )}
-
-            {deleteModalOpen && (
-                <DeleteModal
-                    open={deleteModalOpen}
-                    onClose={() => {
-                        if (!isDeleting) {
-                            setDeleteModalOpen(false);
-                            setContactToDelete(null);
-                        }
-                    }}
-                    onDelete={handleDeleteConfirm}
-                    name={contactToDelete?.fullname || contactToDelete?.email || 'this message'}
-                    message="contact message"
-                    headingname="Delete Contact Message"
-                    isLoading={isDeleting}
-                />
             )}
 
             {loading ? (
@@ -244,13 +178,13 @@ const GetContactUs = ({ searchValue }) => {
                                     {translations.Phone || 'Phone'} {renderSortIcon('phone')}
                                 </th>
                                 <th onClick={() => handleSort('subject')}>
-                                    Subject {renderSortIcon('subject')}
+                                    {translations.Subject || 'Subject'} {renderSortIcon('subject')}
                                 </th>
                                 <th onClick={() => handleSort('message')}>
                                     {translations.Message || 'Message'} {renderSortIcon('message')}
                                 </th>
                                 <th onClick={() => handleSort('createdAt')}>
-                                    Date {renderSortIcon('createdAt')}
+                                    {translations.Date || 'Date'} {renderSortIcon('createdAt')}
                                 </th>
                                 <th className="contactus-view-th" style={{ textAlign: 'center' }}>
                                     {translations.action || 'Actions'}
@@ -307,15 +241,6 @@ const GetContactUs = ({ searchValue }) => {
                                                         <WhatsAppIcon fontSize="small" />
                                                     </IconButton>
                                                 )}
-
-                                                <IconButton
-                                                    onClick={() => handleDeleteClick(contact)}
-                                                    size="small"
-                                                    title={translations.delete || 'Delete'}
-                                                    className="delete-icon-btn"
-                                                >
-                                                    <DeleteIcon fontSize="small" />
-                                                </IconButton>
                                             </div>
                                         </td>
                                     </tr>
@@ -363,7 +288,7 @@ const GetContactUs = ({ searchValue }) => {
                             <div className="modal-content">
                                 <div className="modal-header">
                                     <h5 id="contactus-view-modal-title" className="modal-title">
-                                        Contact Inquiry Details
+                                        {translations.ContactDetails || 'Contact Inquiry Details'}
                                     </h5>
                                     <button
                                         type="button"
@@ -416,7 +341,7 @@ const GetContactUs = ({ searchValue }) => {
                                         </span>
                                     </div>
                                     <div className="contactus-view-row">
-                                        <span className="contactus-view-label">Subject:</span>
+                                        <span className="contactus-view-label">{translations.Subject || 'Subject'}:</span>
                                         <span className="contactus-view-value">
                                             <span className="contact-subject-badge">
                                                 {viewModalContact.subject || 'General'}
@@ -424,7 +349,7 @@ const GetContactUs = ({ searchValue }) => {
                                         </span>
                                     </div>
                                     <div className="contactus-view-row">
-                                        <span className="contactus-view-label">Date Received:</span>
+                                        <span className="contactus-view-label">{translations.Date || 'Date Received'}:</span>
                                         <span className="contactus-view-value">
                                             {formatDate(viewModalContact.createdAt)}
                                         </span>
@@ -439,12 +364,23 @@ const GetContactUs = ({ searchValue }) => {
                                     </div>
                                 </div>
                                 <div className="modal-footer">
+                                    {viewModalContact.phone && (
+                                        <button
+                                            type="button"
+                                            className="btn btn-outline-success"
+                                            style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}
+                                            onClick={() => openWhatsAppDirect(viewModalContact.phone, viewModalContact.fullname)}
+                                        >
+                                            <WhatsAppIcon fontSize="small" />
+                                            <span>Chat with Lead on WhatsApp</span>
+                                        </button>
+                                    )}
                                     <button
                                         type="button"
                                         className="btn btn-secondary"
                                         onClick={() => setViewModalContact(null)}
                                     >
-                                        Close
+                                        {translations.Close || 'Close'}
                                     </button>
                                 </div>
                             </div>
