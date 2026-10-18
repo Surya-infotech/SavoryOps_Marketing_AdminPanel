@@ -34,25 +34,23 @@ const ContactUs = () => {
     }, [location, navigate]);
 
     return (
-        <>
-            <div className="ContactUs-container">
-                <div className="contactus-container">
-                    <h6 className="contactus-headingname">{translations.ContactUs}</h6>
-                    <div className="contactus-form-container">
-                        {alertMessage && <AlertMessage message={alertMessage} onClose={() => setAlertMessage("")} />}
-                        {warningMessage && <WarningModal message={warningMessage} onClose={() => setWarningMessage("")} />}
-                        <div className="contactus-header">
-                            <SearchInput
-                                placeholder={translations.searchPlaceholder}
-                                value={searchValue}
-                                onChange={(e) => setSearchValue(e.target.value)}
-                            />
-                        </div>
-                        <GetContactUs searchValue={searchValue} />
+        <div className="ContactUs-container">
+            <div className="contactus-container">
+                <h6 className="contactus-headingname">{translations.ContactUs || "Contact Us"}</h6>
+                <div className="contactus-form-container">
+                    {alertMessage && <AlertMessage message={alertMessage} onClose={() => setAlertMessage("")} />}
+                    {warningMessage && <WarningModal message={warningMessage} onClose={() => setWarningMessage("")} />}
+                    <div className="contactus-header">
+                        <SearchInput
+                            placeholder={translations.searchPlaceholder || "Search..."}
+                            value={searchValue}
+                            onChange={(e) => setSearchValue(e.target.value)}
+                        />
                     </div>
+                    <GetContactUs searchValue={searchValue} />
                 </div>
             </div>
-        </>
+        </div>
     );
 };
 
