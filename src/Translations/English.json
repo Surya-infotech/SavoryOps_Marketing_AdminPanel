@@ -240,5 +240,7 @@
     "InquiryDate": "Inquiry Date",
     "InquiryDetails": "White-Label Inquiry Details",
     "Requirements": "Requirements",
-    "statusupdatedsuccessfully": "Status updated successfully."
+    "statusupdatedsuccessfully": "Status updated successfully.",
+    "Subject": "Subject",
+    "Date": "Date"
 }
