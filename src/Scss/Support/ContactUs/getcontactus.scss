@@ -2,19 +2,14 @@
 
 .tablediv {
     @include table_mixin.main_table;
-    overflow-x: auto;
 
     .contactustable {
         @include table_mixin.table;
-        min-width: 900px;
-        width: 100%;
 
         thead {
             th {
                 @include table_mixin.table_thead;
                 white-space: nowrap;
-                padding: 12px 14px;
-                cursor: pointer;
             }
 
             td {
@@ -29,93 +24,44 @@
 
             td {
                 @include table_mixin.table_td;
-                padding: 12px 14px;
                 vertical-align: middle;
             }
 
-            .contactus-name-cell {
-                white-space: nowrap;
-                font-weight: 600;
-            }
-
-            .contactus-email-cell {
-                white-space: nowrap;
-            }
-
-            .contactus-phone-cell {
-                white-space: nowrap;
-            }
-
-            .contactus-subject-cell {
-                white-space: nowrap;
-            }
-
-            .contactus-date-cell {
-                white-space: nowrap;
-                font-size: 0.85rem;
-                color: #555;
-            }
-
-            .contactus-message-cell {
+            .badge-subject {
+                display: inline-block;
                 max-width: 220px;
+                white-space: nowrap;
                 overflow: hidden;
                 text-overflow: ellipsis;
-                white-space: nowrap;
-                cursor: help;
+                background-color: rgba(34, 197, 94, 0.1);
+                color: #15803d;
+                border: 1px solid rgba(34, 197, 94, 0.25);
+                padding: 3px 8px;
+                border-radius: 6px;
+                font-size: 0.8rem;
+                font-weight: 500;
             }
 
             .contactus-actions {
                 display: flex;
                 align-items: center;
-                justify-content: center;
                 gap: 4px;
                 white-space: nowrap;
             }
 
             .view-icon {
                 color: #2e7d32;
-
                 &:hover {
                     color: #1b5e20;
-                    background-color: rgba(46, 125, 50, 0.08);
                 }
             }
 
             .wa-icon-btn {
                 color: #25d366;
-
                 &:hover {
                     color: #128c7e;
-                    background-color: rgba(37, 211, 102, 0.08);
                 }
             }
-
-
-
-            .contact-subject-badge {
-                display: inline-block;
-                padding: 3px 10px;
-                border-radius: 9999px;
-                font-size: 0.78rem;
-                font-weight: 600;
-                background-color: rgba(46, 125, 50, 0.1);
-                color: #2e7d32;
-                border: 1px solid rgba(46, 125, 50, 0.25);
-            }
-
-            a {
-                color: #2e7d32;
-                text-decoration: none;
-
-                &:hover {
-                    text-decoration: underline;
-                }
-            }
-        }
-
-        .contactus-view-th {
-            cursor: default;
-            text-align: center;
         }
     }
 }
@@ -148,7 +94,7 @@
         align-items: center;
         justify-content: center;
         min-height: 100%;
-        padding: 1.5rem;
+        padding: 1rem;
         box-sizing: border-box;
     }
 
@@ -162,71 +108,98 @@
         background-color: var(--page-color, #fff);
         color: var(--text-color, #333);
         border-radius: 12px;
-        box-shadow: 0 12px 36px rgba(0, 0, 0, 0.3);
-        border: none;
-        overflow: hidden;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.35);
+        border: 1px solid var(--border-color, rgba(0, 0, 0, 0.1));
     }
 
     .modal-header {
-        padding: 1.1rem 1.4rem;
-        border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-        background: rgba(0, 0, 0, 0.02);
+        padding: 1rem 1.25rem;
+        border-bottom: 1px solid var(--border-color, rgba(0, 0, 0, 0.1));
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
     }
 
     .modal-footer {
-        padding: 1rem 1.4rem;
-        border-top: 1px solid rgba(0, 0, 0, 0.08);
-        background: rgba(0, 0, 0, 0.02);
+        padding: 1rem 1.25rem;
+        border-top: 1px solid var(--border-color, rgba(0, 0, 0, 0.1));
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
     }
 
     .contactus-view-modal-body {
-        display: flex;
-        flex-direction: column;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
         gap: 14px;
-        padding: 1.4rem;
-        max-height: 75vh;
-        overflow-y: auto;
-    }
+        padding: 1.25rem;
 
-    .contactus-view-row {
-        display: flex;
-        flex-direction: column;
-        gap: 4px;
-
-        .contactus-view-label {
-            font-weight: 600;
-            color: #666;
-            font-size: 0.82rem;
-            text-transform: uppercase;
-            letter-spacing: 0.04em;
+        .full-row {
+            grid-column: 1 / -1;
         }
 
-        .contactus-view-value {
-            color: var(--text-color, #222);
-            font-size: 0.95rem;
+        .contactus-view-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
 
-            a {
-                color: #2e7d32;
-                text-decoration: none;
+            .view-label {
+                font-size: 0.78rem;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+                font-weight: 700;
+                color: var(--text-muted, #6b7280);
+            }
 
-                &:hover {
-                    text-decoration: underline;
+            .view-value {
+                font-size: 0.95rem;
+                font-weight: 600;
+                color: var(--text-color, #111827);
+                word-break: break-word;
+
+                a {
+                    color: #028802;
+                    text-decoration: none;
+                    &:hover {
+                        text-decoration: underline;
+                    }
+                }
+            }
+
+            &.message-item {
+                background: rgba(0, 0, 0, 0.03);
+                border: 1px solid var(--border-color, rgba(0, 0, 0, 0.08));
+                padding: 12px;
+                border-radius: 8px;
+
+                .view-value {
+                    white-space: pre-wrap;
+                    font-weight: 400;
+                    line-height: 1.5;
+                    max-height: 160px;
+                    overflow-y: auto;
                 }
             }
         }
+    }
 
-        &.contactus-view-row-message .contactus-view-message {
-            white-space: pre-wrap;
-            word-break: break-word;
-            max-height: 220px;
-            overflow-y: auto;
-            line-height: 1.6;
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            padding: 14px 16px;
-            color: #1e293b;
-            font-size: 0.92rem;
+    .btn-wa-direct {
+        background-color: #25d366;
+        color: #ffffff;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 6px;
+        font-weight: 600;
+        font-size: 0.88rem;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        text-decoration: none;
+
+        &:hover {
+            background-color: #1ebe5d;
+            color: #ffffff;
         }
     }
 }

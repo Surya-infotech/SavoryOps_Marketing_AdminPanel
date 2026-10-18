@@ -169,64 +169,53 @@ const GetContactUs = ({ searchValue }) => {
                         <thead>
                             <tr>
                                 <th onClick={() => handleSort('fullname')}>
-                                    {translations.FullName || 'Full Name'} {renderSortIcon('fullname')}
+                                    {translations.FullName || "Full Name"} {renderSortIcon('fullname')}
                                 </th>
                                 <th onClick={() => handleSort('email')}>
-                                    {translations.Email || 'Email'} {renderSortIcon('email')}
+                                    {translations.Email || "Email"} {renderSortIcon('email')}
                                 </th>
                                 <th onClick={() => handleSort('phone')}>
-                                    {translations.Phone || 'Phone'} {renderSortIcon('phone')}
+                                    {translations.Phone || "Phone / WhatsApp"} {renderSortIcon('phone')}
                                 </th>
                                 <th onClick={() => handleSort('subject')}>
-                                    {translations.Subject || 'Subject'} {renderSortIcon('subject')}
+                                    {translations.Subject || "Subject"} {renderSortIcon('subject')}
                                 </th>
                                 <th onClick={() => handleSort('message')}>
-                                    {translations.Message || 'Message'} {renderSortIcon('message')}
+                                    {translations.Message || "Message"} {renderSortIcon('message')}
                                 </th>
                                 <th onClick={() => handleSort('createdAt')}>
-                                    {translations.Date || 'Date'} {renderSortIcon('createdAt')}
+                                    {translations.InquiryDate || translations.Date || "Date"} {renderSortIcon('createdAt')}
                                 </th>
-                                <th className="contactus-view-th" style={{ textAlign: 'center' }}>
-                                    {translations.action || 'Actions'}
-                                </th>
+                                <th>{translations.Action || "Actions"}</th>
                             </tr>
                         </thead>
                         <tbody>
                             {visibleContacts.length > 0 ? (
                                 visibleContacts.map((contact) => (
                                     <tr key={contact._id}>
-                                        <td className="contactus-name-cell">
+                                        <td>
                                             <strong>{contact.fullname || '-'}</strong>
                                         </td>
-                                        <td className="contactus-email-cell">
+                                        <td>
                                             <a href={`mailto:${contact.email}`}>{contact.email || '-'}</a>
                                         </td>
-                                        <td className="contactus-phone-cell">
-                                            {contact.phone ? (
-                                                <a href={`tel:${contact.phone}`}>{contact.phone}</a>
-                                            ) : (
-                                                '-'
-                                            )}
-                                        </td>
-                                        <td className="contactus-subject-cell">
-                                            <span className="contact-subject-badge">
-                                                {contact.subject || 'General'}
+                                        <td>{contact.phone || '-'}</td>
+                                        <td>
+                                            <span className="badge-subject" title={contact.subject}>
+                                                {contact.subject || 'General Inquiry'}
                                             </span>
                                         </td>
-                                        <td className="contactus-message-cell" title={contact.message || ''}>
+                                        <td title={contact.message || ''}>
                                             {truncateMessage(contact.message)}
                                         </td>
-                                        <td className="contactus-date-cell">
-                                            {formatDate(contact.createdAt)}
-                                        </td>
+                                        <td>{formatDate(contact.createdAt)}</td>
                                         <td>
                                             <div className="contactus-actions">
                                                 <IconButton
                                                     onClick={() => setViewModalContact(contact)}
-                                                    aria-label={translations.View || 'View'}
-                                                    title={translations.View || 'View'}
-                                                    className="view-icon"
                                                     size="small"
+                                                    title={translations.View || "View Details"}
+                                                    className="view-icon"
                                                 >
                                                     <ViewIcon fontSize="small" />
                                                 </IconButton>
@@ -248,7 +237,7 @@ const GetContactUs = ({ searchValue }) => {
                             ) : (
                                 <tr>
                                     <td colSpan="7" style={{ textAlign: 'center', padding: '24px 0' }}>
-                                        {translations.nodatafound || 'No inquiries found'}
+                                        {translations.nodatafound || "No inquiries found"}
                                     </td>
                                 </tr>
                             )}
@@ -280,95 +269,63 @@ const GetContactUs = ({ searchValue }) => {
                     tabIndex="-1"
                     role="dialog"
                     aria-modal="true"
-                    aria-labelledby="contactus-view-modal-title"
                 >
                     <div className="contactus-view-modal-backdrop" onClick={() => setViewModalContact(null)} />
                     <div className="contactus-view-modal-dialog-wrapper">
                         <div className="modal-dialog modal-dialog-centered">
                             <div className="modal-content">
                                 <div className="modal-header">
-                                    <h5 id="contactus-view-modal-title" className="modal-title">
-                                        {translations.ContactDetails || 'Contact Inquiry Details'}
+                                    <h5 className="modal-title">
+                                        {translations.InquiryDetails || translations.ContactDetails || "Contact Inquiry Details"}
                                     </h5>
                                     <button
                                         type="button"
                                         className="btn-close"
                                         onClick={() => setViewModalContact(null)}
-                                        aria-label="Close"
+                                        aria-label={translations.Close || "Close"}
                                     />
                                 </div>
                                 <div className="modal-body contactus-view-modal-body">
-                                    <div className="contactus-view-row">
-                                        <span className="contactus-view-label">
-                                            {translations.FullName || 'Full Name'}:
-                                        </span>
-                                        <span className="contactus-view-value">
+                                    <div className="contactus-view-item">
+                                        <span className="view-label">{translations.FullName || "Full Name"}</span>
+                                        <span className="view-value">
                                             <strong>{viewModalContact.fullname || '-'}</strong>
                                         </span>
                                     </div>
-                                    <div className="contactus-view-row">
-                                        <span className="contactus-view-label">
-                                            {translations.Email || 'Email'}:
-                                        </span>
-                                        <span className="contactus-view-value">
+                                    <div className="contactus-view-item">
+                                        <span className="view-label">{translations.Email || "Email"}</span>
+                                        <span className="view-value">
                                             <a href={`mailto:${viewModalContact.email}`}>
                                                 {viewModalContact.email || '-'}
                                             </a>
                                         </span>
                                     </div>
-                                    <div className="contactus-view-row">
-                                        <span className="contactus-view-label">
-                                            {translations.Phone || 'Phone'}:
-                                        </span>
-                                        <span className="contactus-view-value" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                            {viewModalContact.phone ? (
-                                                <>
-                                                    <a href={`tel:${viewModalContact.phone}`}>
-                                                        {viewModalContact.phone}
-                                                    </a>
-                                                    <button
-                                                        type="button"
-                                                        onClick={() => openWhatsAppDirect(viewModalContact.phone, viewModalContact.fullname)}
-                                                        className="btn btn-sm btn-outline-success"
-                                                        style={{ padding: '2px 8px', fontSize: '0.75rem', display: 'inline-flex', alignItems: 'center', gap: '4px' }}
-                                                    >
-                                                        <WhatsAppIcon style={{ fontSize: '14px' }} /> WhatsApp
-                                                    </button>
-                                                </>
-                                            ) : (
-                                                '-'
-                                            )}
-                                        </span>
+                                    <div className="contactus-view-item">
+                                        <span className="view-label">{translations.Phone || "Phone / WhatsApp"}</span>
+                                        <span className="view-value">{viewModalContact.phone || '-'}</span>
                                     </div>
-                                    <div className="contactus-view-row">
-                                        <span className="contactus-view-label">{translations.Subject || 'Subject'}:</span>
-                                        <span className="contactus-view-value">
-                                            <span className="contact-subject-badge">
-                                                {viewModalContact.subject || 'General'}
-                                            </span>
-                                        </span>
+                                    <div className="contactus-view-item">
+                                        <span className="view-label">{translations.Subject || "Subject"}</span>
+                                        <span className="view-value">{viewModalContact.subject || '-'}</span>
                                     </div>
-                                    <div className="contactus-view-row">
-                                        <span className="contactus-view-label">{translations.Date || 'Date Received'}:</span>
-                                        <span className="contactus-view-value">
+                                    <div className="contactus-view-item full-row">
+                                        <span className="view-label">{translations.InquiryDate || translations.Date || "Submitted Date"}</span>
+                                        <span className="view-value">
                                             {formatDate(viewModalContact.createdAt)}
                                         </span>
                                     </div>
-                                    <div className="contactus-view-row contactus-view-row-message">
-                                        <span className="contactus-view-label">
-                                            {translations.Message || 'Message'}:
-                                        </span>
-                                        <div className="contactus-view-value contactus-view-message" style={{ background: 'rgba(0,0,0,0.04)', padding: '12px', borderRadius: '6px', border: '1px solid rgba(0,0,0,0.08)' }}>
+                                    <div className="contactus-view-item full-row message-item">
+                                        <span className="view-label">{translations.Message || "Message"}</span>
+                                        <span className="view-value">
                                             {viewModalContact.message || '-'}
-                                        </div>
+                                        </span>
                                     </div>
                                 </div>
                                 <div className="modal-footer">
                                     {viewModalContact.phone && (
                                         <button
                                             type="button"
-                                            className="btn btn-outline-success"
-                                            style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}
+                                            className="btn-wa-direct"
                                             onClick={() => openWhatsAppDirect(viewModalContact.phone, viewModalContact.fullname)}
                                         >
                                             <WhatsAppIcon fontSize="small" />
@@ -380,7 +337,7 @@ const GetContactUs = ({ searchValue }) => {
                                         className="btn btn-secondary"
                                         onClick={() => setViewModalContact(null)}
                                     >
-                                        {translations.Close || 'Close'}
+                                        {translations.Close || "Close"}
                                     </button>
                                 </div>
                             </div>
