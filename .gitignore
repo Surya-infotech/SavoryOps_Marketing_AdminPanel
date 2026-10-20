@@ -1,4 +1,4 @@
-# Logs
+
 logs
 *.log
 npm-debug.log*
@@ -11,8 +11,22 @@ node_modules
 dist
 dist-ssr
 *.local
+*.zip
 
-# Editor directories and files
+seeders
+public
+
+# Environment variables
+.env
+.env.local
+.env.development
+.env.production
+.env.test
+*.env
+
+# Keep .env.example for reference
+!.env.example
+
 .vscode/*
 !.vscode/extensions.json
 .idea
